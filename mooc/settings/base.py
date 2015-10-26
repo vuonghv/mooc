@@ -38,6 +38,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Project's apps
+    'ars.core',
+    'ars.teachers',
+    'ars.students',
+    'ars.courses',
+    'ars.categories',
 )
 
 MIDDLEWARE_CLASSES = (
