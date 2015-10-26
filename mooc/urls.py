@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes': settings.DEBUG}),
     
     url(r'^admin/', include('ars.admin.urls', namespace='admin')),
+    url(r'^teachers/', include('ars.teachers.urls', namespace='teachers')),
 ]
