@@ -1,0 +1,82 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <h1>Register</h1>
+            <h3>Do not have an account? Register here.</h3>
+            <form method="POST" action="{% url 'students:signup' %}" role="form" name="register-form" id="register-form">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="form-group text-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="form-group {{ form.username.errors|yesno:'has-error,' }}" id="register-login-group">
+                    <label for="{{ form.username.id_for_label }}">Choose Your Login</label>
+                    <div class="input-group">
+                        <input name="{{ form.username.html_name }}" type="text" class="form-control" id="{{ form.username.id_for_label }}" placeholder="Username" value="{{ form.username.value|default:'' }}">
+                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                    </div>
+                    {% if form.username.help_text %}
+                    <div class="input-group">
+                        <span id="help_text_{{ form.username.id_for_label }}" class="help-block">{{ form.username.help_text }}</span>
+                    </div>
+                    {% endif %}
+                    {% if form.username.errors %}
+                    <div class="input-group">
+                        <div class="text-danger">
+                            {{ form.username.errors }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group {{ form.password1.errors|yesno:'has-error,' }}" id="register-password1-group">
+                    <label for="{{ form.password1.id_for_label }}">Password</label>
+                    <div class="input-group">
+                        <input name="{{ form.password1.html_name }}" type="password" class="form-control" id="{{ form.password1.id_for_label }}" placeholder="Password">
+                        <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                    </div>
+                    {% if form.password1.help_text %}
+                    <div class="input-group">
+                        <span id="help_text_{{ form.password1.id_for_label }}" class="help-block">{{ form.password1.help_text }}</span>
+                    </div>
+                    {% endif %}
+                    {% if form.password1.errors %}
+                    <div class="input-group">
+                        <div class="text-danger">
+                            {{ form.password1.errors }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group {{ form.password2.errors|yesno:'has-error,' }}" id="register-password2-group">
+                    <label for="{{ form.password2.id_for_label }}">Password confirm</label>
+                    <div class="input-group">
+                        <input name="{{ form.password2.html_name }}" type="password" class="form-control" id="{{ form.password2.id_for_label }}" placeholder="Repeated password">
+                        <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                    </div>
+                    {% if form.password2.help_text %}
+                    <div class="input-group">
+                        <span id="help_text_{{ form.password2.id_for_label }}" class="help-block">{{ form.password2.help_text }}</span>
+                    </div>
+                    {% endif %}
+                    {% if form.password2.errors %}
+                    <div class="input-group">
+                        <div class="text-danger">
+                            {{ form.password2.errors }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -27,4 +27,5 @@ urlpatterns = [
     
     url(r'^admin/', include('ars.admin.urls', namespace='admin')),
     url(r'^teachers/', include('ars.teachers.urls', namespace='teachers')),
+    url(r'^students/', include('ars.students.urls', namespace='students')),
 ]

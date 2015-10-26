@@ -31,10 +31,17 @@
                     <li><a href="mailto:info@smartway.com"><i class="fa fa-envelope"></i><span>info@smartway.com</span></a></li>
                 </ul>
                 <nav class="pull-right">
+                    {% if user.is_authenticated %}
                     <ul>
-                        <li><a href="#"><i class="fa fa-user"></i><span>Register</span></a></li>
-                        <li><a href="#"><i class="fa fa-lock"></i><span>Log In</span></a></li>
+                        <li><a href="#"><i class="fa fa-user"></i><span>{{ user.username }}</span></a></li>
+                        <li><a href="#"><i class="fa fa-lock"></i><span>Log out</span></a></li>
                     </ul>
+                    {% else %}
+                    <ul>
+                        <li><a href="{% url 'students:signup' %}"><i class="fa fa-user"></i><span>Register</span></a></li>
+                        <li><a href="{% url 'students:login' %}"><i class="fa fa-lock"></i><span>Log In</span></a></li>
+                    </ul>
+                    {% endif %}
                 </nav>
             </div>
         </div>
@@ -81,9 +88,7 @@
         <div class="title-image"></div>
         <div class="container">
             <div class="row">
-                <div class="col-sm-12 text-center">
-                    Courses
-                </div>
+                <div class="col-sm-12 text-center">{{ page_title }}</div>
             </div>
         </div>
     </div>
