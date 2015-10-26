@@ -11,6 +11,8 @@ class Course(Timestampable, Describable):
     class Meta:
         db_table = 'course'
 
+    def __str__(self):
+        return self.name
 
 class TeacherCourse(models.Model):
     teacher = models.ForeignKey(Teacher)
