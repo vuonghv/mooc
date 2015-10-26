@@ -8,6 +8,9 @@ class Course(Timestampable, Describable):
     teachers = models.ManyToManyField(Teacher,
                             through='TeacherCourse', related_name='courses')
 
+    class Meta:
+        db_table = 'course'
+
     def __str__(self):
         return 'Course {}'.format(self.name)
 
@@ -16,3 +19,6 @@ class TeacherCourse(models.Model):
     teacher = models.ForeignKey(Teacher)
     course = models.ForeignKey(Course)
     is_creator = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'teacher_course'

@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 from ars.categories.models import Category
 from ars.courses.models import Course
@@ -6,62 +7,60 @@ from ars.students.models import Student
 from ars.core.models import Describable, Timestampable
 
 
-class Subject(Describable):
+class Subject(Describable, Timestampable):
     course = models.ForeignKey(Course)
     categories = models.ManyToManyField(Category, db_table="category_subject", related_name='subjects')
     slug = models.SlugField()
-    date_create = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to=settings.SUBJECT_DIR, max_length=255, default='', blank=False)
 
     class Meta:
         verbose_name = "Subject"
         verbose_name_plural = "Subjects"
-        db_table = 'Subject'
+        db_table = 'subject'
 
     def __str__(self):
         return self.name
 
-class Session(models.Model):
+class Session(Timestampable):
     subject = models.ForeignKey(Subject)
-    date_create = models.DateTimeField(auto_now_add=True)
-    date_start = models.DateTimeField()
-    date_end = models.DateTimeField()
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
 
     class Meta:
         verbose_name = "Session"
         verbose_name_plural = "Sessions"
-        db_table = 'Session'
+        db_table = 'session'
 
     def __str__(self):
         return 'Session of subject {}, starting on {}'.format(
-                                self.subject.name, self.date_start)
+                                self.subject.name, self.start_date)
     
 class Task(Describable):
     session = models.ForeignKey(Session)
     slug = models.SlugField()
     content = models.TextField()
-    date_start = models.DateTimeField()
-    date_end = models.DateTimeField()
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
 
     class Meta:
         verbose_name = "Task"
         verbose_name_plural = "Tasks"
-        db_table = 'Task'
+        db_table = 'task'
 
     def __str__(self):
         return 'Task {}'.format(self.name)
 
-class Endroll(models.Model):
+class Endroll(Timestampable):
     session = models.ForeignKey(Session)
     student = models.ForeignKey(Student)
-    date_create = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Endroll"
         verbose_name_plural = "Endrolls"
-        db_table = 'Endroll'
+        db_table = 'endroll'
 
     def __str__(self):
         return 'Student {} enrolled subject {}, start on {}'.format(
                                 self.student.user.username,
                                 self.session.subject.name,
-                                self.session.date_start)
+                                self.session.start_date)
