@@ -12,8 +12,7 @@ class Course(Timestampable, Describable):
         db_table = 'course'
 
     def __str__(self):
-        return 'Course {}'.format(self.name)
-
+        return self.name
 
 class TeacherCourse(models.Model):
     teacher = models.ForeignKey(Teacher)

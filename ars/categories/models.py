@@ -9,4 +9,4 @@ class Category(Timestampable, Describable):
         db_table = 'category'
 
     def __str__(self):
-        return 'Category {}'.format(self.name)
+        return self.name

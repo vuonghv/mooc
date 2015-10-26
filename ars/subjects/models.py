@@ -18,10 +18,15 @@ class Subject(Describable, Timestampable):
         verbose_name_plural = "Subjects"
         db_table = 'subject'
 
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        return ''
+
     def __str__(self):
         return self.name
 
-class Session(Timestampable):
+class Session(models.Model):
     subject = models.ForeignKey(Subject)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
