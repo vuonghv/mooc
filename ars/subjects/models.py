@@ -2,15 +2,14 @@ from django.db import models
 
 from ars.categories.models import Category
 from ars.courses.models import Course
-from ars.students import Student
+from ars.students.models import Student
+from ars.core.models import Describable, Timestampable
 
-# Create your models here.
-class Subject(models.Model):
+
+class Subject(Describable):
     course = models.ForeignKey(Course)
     categories = models.ManyToManyField(Category, db_table="category_subject", related_name='subjects')
-    name = models.CharField(max_length=255)
     slug = models.SlugField()
-    description = models.TextField()
     date_create = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -33,13 +32,12 @@ class Session(models.Model):
         db_table = 'Session'
 
     def __str__(self):
-        pass
+        return 'Session of subject {}, starting on {}'.format(
+                                self.subject.name, self.date_start)
     
-class Task(models.Model):
+class Task(Describable):
     session = models.ForeignKey(Session)
-    name = models.CharField(max_length=255)
     slug = models.SlugField()
-    description = models.TextField()
     content = models.TextField()
     date_start = models.DateTimeField()
     date_end = models.DateTimeField()
@@ -50,7 +48,7 @@ class Task(models.Model):
         db_table = 'Task'
 
     def __str__(self):
-        return self.name
+        return 'Task {}'.format(self.name)
 
 class Endroll(models.Model):
     session = models.ForeignKey(Session)
@@ -63,6 +61,7 @@ class Endroll(models.Model):
         db_table = 'Endroll'
 
     def __str__(self):
-        pass
-    
-    
+        return 'Student {} enrolled subject {}, start on {}'.format(
+                                self.student.user.username,
+                                self.session.subject.name,
+                                self.session.date_start)

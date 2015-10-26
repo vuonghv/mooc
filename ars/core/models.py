@@ -19,7 +19,6 @@ class Describable(models.Model):
 
 
 class AbstractAccount(models.Model):
-    user = models.OneToOneField(settings.USER_AUTH_MODEL, related_name='profile')
     avatar = models.ImageField(upload_to='avatars')
     modified_date = models.DateTimeField(auto_now=True)
 

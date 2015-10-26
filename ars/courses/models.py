@@ -1,15 +1,15 @@
 from django.db import models
 
 from ars.core.models import Timestampable, Describable
-
-
-class TeacherCourse(models.Model):
-    teacher = models.ForeignKey('ars.teachers.Teacher')
-    course = models.ForeignKey('ars.courses.Course')
-    is_creator = models.BooleanField(default=False)
+from ars.teachers.models import Teacher
 
 
 class Course(Timestampable, Describable):
-    teachers = models.ManyToManyField('ars.teachers.Teacher',
-                                        through=TeacherCourse,
-                                        related_name='courses')
+    teachers = models.ManyToManyField(Teacher,
+                            through='TeacherCourse', related_name='courses')
+
+
+class TeacherCourse(models.Model):
+    teacher = models.ForeignKey(Teacher)
+    course = models.ForeignKey(Course)
+    is_creator = models.BooleanField(default=False)
