@@ -7,7 +7,7 @@ from ars.students import Student
 # Create your models here.
 class Subject(models.Model):
     course = models.ForeignKey(Course)
-    category = models.ForeignKey(Category)
+    categories = models.ManyToManyField(Category, db_table="category_subject", related_name='subjects')
     name = models.CharField(max_length=255)
     slug = models.SlugField()
     description = models.TextField()
