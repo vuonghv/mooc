@@ -9,3 +9,6 @@ class Teacher(AbstractAccount):
 
     def is_teacher(self):
         return True
+    
+    def __str__(self):
+        return 'Teacher {}'.format(self.name)

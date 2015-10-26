@@ -9,3 +9,6 @@ class Student(AbstractAccount):
 
     def is_teacher(self):
         return False
+
+    def __str__(self):
+        return 'Student {}'.format(self.name)

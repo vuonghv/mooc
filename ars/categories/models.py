@@ -4,4 +4,6 @@ from ars.core.models import Timestampable, Describable
 
 
 class Category(Timestampable, Describable):
-    pass
+
+    def __str__(self):
+        return 'Category {}'.format(self.name)
