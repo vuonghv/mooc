@@ -4,4 +4,6 @@ from ars.core.models import Timestampable, Describable
 
 
 class Category(Timestampable, Describable):
-    pass
+    class Meta:
+        db_table = 'category'
+

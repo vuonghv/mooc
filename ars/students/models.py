@@ -9,3 +9,6 @@ class Student(AbstractAccount):
 
     def is_teacher(self):
         return False
+
+    class Meta:
+        db_table = 'student'

@@ -45,6 +45,9 @@ INSTALLED_APPS = (
     'ars.students',
     'ars.courses',
     'ars.categories',
+    'ars.blog',
+    'ars.subjects',
+    'ars.reviews',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -122,3 +125,4 @@ MEDIA_URL = '/media/'
 
 ###########################################
 BLOG_DIR = 'blog'
+SUBJECT_DIR = 'subjects'

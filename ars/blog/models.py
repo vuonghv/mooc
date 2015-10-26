@@ -2,9 +2,10 @@ from django.db import models
 from django.conf import settings
 
 from ars.teachers.models import Teacher
+from ars.core.models import Timestampable
 
 # Create your models here.
-class Blog(models.Model):
+class Blog(Timestampable):
     WAITING = 1
     APPROVE = 2
 
@@ -24,7 +25,7 @@ class Blog(models.Model):
     class Meta:
         verbose_name = "Blog"
         verbose_name_plural = "Blogs"
-        db_table = 'Blog'
+        db_table = 'blog'
 
     def __str__(self):
         return self.title
