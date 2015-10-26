@@ -1,0 +1,56 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Log In</h1>
+            <h3>Already a Member? Log in here.</h3>
+            <form role="form" name="login-form" id="login-form">
+                <div class="form-group" id="login-login-group">
+                    <label for="login-input-login">Login</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="login-input-login" placeholder="Username or email">
+                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                    </div>
+                </div>
+                <div class="form-group" id="login-password-group">
+                    <label for="login-input-password">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="login-input-password" placeholder="&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;">
+                        <div class="input-group-addon"><i class="fa fa-lock"></i></div>
+                    </div>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Remember me
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Log In</button>
+                <a href="#" class="pull-right">Lost your password?</a>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <h1>Register</h1>
+            <h3>Do not have an account? Register here.</h3>
+            <form role="form" name="register-form" id="register-form">
+                <div class="form-group" id="register-login-group">
+                    <label for="register-input-login">Choose Your Login</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="register-input-login" placeholder="Username">
+                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                    </div>
+                </div>
+                <div class="form-group" id="register-email-group">
+                    <label for="register-input-email">Email</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="register-input-email" placeholder="john.doe@gmail.com">
+                        <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
