@@ -356,8 +356,7 @@ class TaskCreateView(TeacherRequiredMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse_lazy('admin:detail_subject' , kwargs={ 'pk': self.object.subject.pk })
-
+        return reverse_lazy('admin:detail_subject' , kwargs={ 'pk': self.session.subject.pk })
 
 class TaskDeleteView(TeacherRequiredMixin, DeleteView):
     """docstring for TaskDeleteView"""

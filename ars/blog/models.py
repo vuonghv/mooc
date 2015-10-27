@@ -27,6 +27,11 @@ class Blog(Timestampable):
         verbose_name_plural = "Blogs"
         db_table = 'blog'
 
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        return ''
+
     def __str__(self):
         return self.title
 
