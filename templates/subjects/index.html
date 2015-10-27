@@ -1,1 +1,193 @@
 {% extends 'layout/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- ==== SIDEBAR START == -->
+        <div class="col-sm-4">
+            <!-- ==== FITER START == -->
+            <div class="widget" data-scroll-reveal>
+                <form role="form">
+                    <h3>Category Filter</h3>
+                    <ul>
+                        <li class="checkbox">
+                            <label>
+                                <input type="checkbox"> Design <span class="pull-right">4</span></label>
+                        </li>
+                        <li class="checkbox">
+                            <label>
+                                <input type="checkbox"> Development <span class="pull-right">7</span></label>
+                        </li>
+                        <li class="checkbox">
+                            <label>
+                                <input type="checkbox"> Illustration <span class="pull-right">5</span></label>
+                        </li>
+                        <li class="checkbox">
+                            <label>
+                                <input type="checkbox"> Photography <span class="pull-right">3</span></label>
+                        </li>
+                    </ul>
+                    <h3>Price Filter</h3>
+                    <ul>
+                        <li class="checkbox">
+                            <label>
+                                <input type="checkbox"> Payable <span class="pull-right">12</span></label>
+                        </li>
+                        <li class="checkbox">
+                            <label>
+                                <input type="checkbox"> Free <span class="pull-right">4</span></label>
+                        </li>
+                    </ul>
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </form>
+            </div>
+            <!-- ==== FITER END == -->
+            <!-- ==== NEWSLETTER START == -->
+            <div class="widget" data-scroll-reveal>
+                <h3>Newsletter</h3>
+                <form role="form" name="newsletter-form" id="newsletter-form" action="process-newsletter.php">
+                    <div class="form-group" id="newsletter-name-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="newsletter-input-name" placeholder="Name">
+                            <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="newsletter-email-group">
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="newsletter-input-email" placeholder="Email">
+                            <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <!-- ==== NEWSLETTER END == -->
+            <!-- ==== LATEST POSTS START == -->
+            <div class="widget" data-scroll-reveal>
+                <h3>Latest posts</h3>
+                <div class="post row">
+                    <div class="col-md-4">
+                        <a href="#"><img src="{% static 'frontend/images/sidebar-post1.jpg' %}" alt="" class="img-responsive" /></a>
+                    </div>
+                    <div class="col-md-8">
+                        <h5><a href="#">Morbi nec quam sed elit pharetra</a></h5>
+                        <div class="meta">Posted Aug 18, 2015 by John Doe in Category Name</div>
+                    </div>
+                </div>
+                <div class="post row">
+                    <div class="col-md-4">
+                        <a href="#"><img src="{% static 'frontend/images/sidebar-post2.jpg' %}" alt="" class="img-responsive" /></a>
+                    </div>
+                    <div class="col-md-8">
+                        <h5><a href="#">Morbi nec quam sed elit pharetra</a></h5>
+                        <div class="meta">Posted Aug 18, 2015 by John Doe in Category Name</div>
+                    </div>
+                </div>
+                <div class="post row">
+                    <div class="col-md-4">
+                        <a href="#"><img src="{% static 'frontend/images/sidebar-post3.jpg' %}" alt="" class="img-responsive" /></a>
+                    </div>
+                    <div class="col-md-8">
+                        <h5><a href="#">Morbi nec quam sed elit pharetra</a></h5>
+                        <div class="meta">Posted Aug 18, 2015 by John Doe in Category Name</div>
+                    </div>
+                </div>
+            </div>
+            <!-- ==== LATEST POSTS END == -->
+        </div>
+        <!-- ==== SIDEBAR END == -->
+        <!-- ==== COURSES START == -->
+        <div class="col-sm-8">
+            <div class="courses">
+                {% if is_paginated %}
+                {% for subject in page_obj %}
+                <!-- Course Start -->
+                <div class="course row" data-scroll-reveal>
+                    <div class="col-sm-4">
+                        <a href="{% url 'subjects:detail' subject.pk %}"><img src="{{ subject.image.url }}" alt="" class="img-responsive" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-md-9 col-sm-8">
+                                <h3><a href="courses-details-left-sidebar.html">{{ subject.name }}</a></h3>
+                                <div class="meta">
+                                    <span><i class="fa fa-user"></i><a href="teachers-profile.html">{{ subject.course.creator.profile.user.username }}</a></span>
+                                    <span><i class="fa fa-file-text"></i>4 Lessons</span>
+                                    <span><i class="fa fa-folder"></i>
+                                        {% for category in subject.categories.all %}
+                                        <a href="#">{{ category }}</a>,&nbsp;
+                                        {% endfor %}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-4 price">$39.90</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>{{ subject.description|truncatewords:50 }}<br>
+                                    <a href="{% url 'subjects:detail' subject.pk %}">Read more <i class="fa fa-angle-right"></i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <hr>
+                    </div>
+                </div>
+                <!-- Course End -->
+                {% endfor %} {# for object_list #}
+                <!-- Pagination Start -->
+                <div class="row" data-scroll-reveal>
+                    <div class="col-sm-6">
+                        <a class="btn btn-primary lesson-prev {{ page_obj.has_previous|yesno:',disabled' }}" href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number}}{% else %}{{ page_obj.number }}{% endif %}"><i class="fa fa-caret-left"></i> &nbsp; Previous</a>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <a class="btn btn-primary lesson-next {{ page_obj.has_next|yesno:',disabled' }}" href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number}}{% else %}{{ page_obj.number }}{% endif %}">Next &nbsp; <i class="fa fa-caret-right"></i></a>
+                    </div>
+                </div>
+                <!-- Pagination End -->
+                {% else %} {# if is_paginated #}
+                {% for subject in object_list %}
+                <!-- Course Start -->
+                <div class="course row" data-scroll-reveal>
+                    <div class="col-sm-4">
+                        <a href="courses-details-left-sidebar.html"><img src="{{ subject.image.url }}" alt="" class="img-responsive" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-md-9 col-sm-8">
+                                <h3><a href="courses-details-left-sidebar.html">{{ subject.name }}</a></h3>
+                                <div class="meta">
+                                    <span><i class="fa fa-user"></i><a href="teachers-profile.html">{{ subject.course.creator.profile.user.username }}</a></span>
+                                    <span><i class="fa fa-file-text"></i>4 Lessons</span>
+                                    <span><i class="fa fa-folder"></i>
+                                        {% for category in subject.categories.all %}
+                                        <a href="#">{{ category }}</a>,&nbsp;
+                                        {% endfor %}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-4 price">$39.90</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>{{ subject.description|truncatewords:50 }}<br>
+                                    <a href="courses-details-left-sidebar.html">Read more <i class="fa fa-angle-right"></i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <hr>
+                    </div>
+                </div>
+                <!-- Course End -->
+                {% endfor %} {# for object_list #}
+                {% endif %}
+            </div>
+        </div>
+        <!-- ==== COURSES END == -->
+    </div>
+</div>
+{% endblock content %}
