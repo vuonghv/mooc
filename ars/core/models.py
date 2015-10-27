@@ -18,12 +18,22 @@ class Describable(models.Model):
         abstract = True
 
 
-class AbstractAccount(models.Model):
+class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                primary_key=True, related_name='profile')
     avatar = models.ImageField(upload_to='avatars')
     modified_date = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        abstract = True
-
+    @property
     def is_teacher(self):
-        raise NotImplementedError
+        if self.teacher:
+            return True
+        return False
+
+    @property
+    def info(self):
+        if self.student:
+            return self.student
+        elif self.teacher:
+            return self.teacher
+        return None

@@ -7,63 +7,62 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('courses', '0001_initial'),
-        ('students', '0001_initial'),
         ('categories', '0001_initial'),
+        ('core', '0001_initial'),
+        ('courses', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Endroll',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
+                ('profile', models.ForeignKey(to='core.UserProfile')),
             ],
             options={
-                'db_table': 'Endroll',
                 'verbose_name_plural': 'Endrolls',
+                'db_table': 'endroll',
                 'verbose_name': 'Endroll',
             },
         ),
         migrations.CreateModel(
             name='Session',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
-                ('created_date', models.DateTimeField(auto_now_add=True)),
-                ('modified_date', models.DateTimeField(auto_now=True)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('start_date', models.DateTimeField()),
                 ('end_date', models.DateTimeField()),
             ],
             options={
-                'db_table': 'Session',
                 'verbose_name_plural': 'Sessions',
+                'db_table': 'session',
                 'verbose_name': 'Session',
             },
         ),
         migrations.CreateModel(
             name='Subject',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=300)),
                 ('description', models.TextField(blank=True, default='')),
                 ('slug', models.SlugField()),
-                ('image', models.ImageField(max_length=255, default='', upload_to='subjects')),
-                ('categories', models.ManyToManyField(db_table='category_subject', to='categories.Category', related_name='subjects')),
+                ('image', models.ImageField(upload_to='subjects', default='', max_length=255)),
+                ('categories', models.ManyToManyField(db_table='category_subject', related_name='subjects', to='categories.Category')),
                 ('course', models.ForeignKey(to='courses.Course')),
             ],
             options={
-                'db_table': 'Subject',
                 'verbose_name_plural': 'Subjects',
+                'db_table': 'subject',
                 'verbose_name': 'Subject',
             },
         ),
         migrations.CreateModel(
             name='Task',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=300)),
                 ('description', models.TextField(blank=True, default='')),
                 ('slug', models.SlugField()),
@@ -73,8 +72,8 @@ class Migration(migrations.Migration):
                 ('session', models.ForeignKey(to='subjects.Session')),
             ],
             options={
-                'db_table': 'Task',
                 'verbose_name_plural': 'Tasks',
+                'db_table': 'task',
                 'verbose_name': 'Task',
             },
         ),
@@ -87,10 +86,5 @@ class Migration(migrations.Migration):
             model_name='endroll',
             name='session',
             field=models.ForeignKey(to='subjects.Session'),
-        ),
-        migrations.AddField(
-            model_name='endroll',
-            name='student',
-            field=models.ForeignKey(to='students.Student'),
         ),
     ]

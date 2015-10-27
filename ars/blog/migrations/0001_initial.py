@@ -7,14 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('teachers', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Blog',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
                 ('title', models.CharField(max_length=255)),
@@ -22,12 +21,11 @@ class Migration(migrations.Migration):
                 ('description', models.TextField()),
                 ('content', models.TextField()),
                 ('status', models.SmallIntegerField(choices=[(1, 'Waiting'), (2, 'Approve')], default=1)),
-                ('image', models.ImageField(max_length=255, default='', upload_to='blog')),
-                ('teacher', models.ForeignKey(to='teachers.Teacher')),
+                ('image', models.ImageField(upload_to='blog', default='', max_length=255)),
             ],
             options={
-                'db_table': 'Blog',
                 'verbose_name_plural': 'Blogs',
+                'db_table': 'blog',
                 'verbose_name': 'Blog',
             },
         ),

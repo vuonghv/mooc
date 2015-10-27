@@ -8,11 +8,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('teachers', '0001_initial'),
+        ('blog', '0001_initial'),
     ]
 
     operations = [
-        migrations.AlterModelTable(
+        migrations.AddField(
+            model_name='blog',
             name='teacher',
-            table='teacher',
+            field=models.ForeignKey(to='teachers.Teacher'),
         ),
     ]

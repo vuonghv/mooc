@@ -3,7 +3,7 @@ from django.conf import settings
 
 from ars.categories.models import Category
 from ars.courses.models import Course
-from ars.students.models import Student
+from ars.core.models import UserProfile
 from ars.core.models import Describable, Timestampable
 
 
@@ -57,7 +57,7 @@ class Task(Describable):
 
 class Endroll(Timestampable):
     session = models.ForeignKey(Session)
-    student = models.ForeignKey(Student)
+    profile = models.ForeignKey(UserProfile)
 
     class Meta:
         verbose_name = "Endroll"
@@ -66,6 +66,6 @@ class Endroll(Timestampable):
 
     def __str__(self):
         return 'Student {} enrolled subject {}, start on {}'.format(
-                                self.student.user.username,
+                                self.profile.user.username,
                                 self.session.subject.name,
                                 self.session.start_date)

@@ -16,6 +16,11 @@ class SignupStudentView(CreateView):
     form_class = UserCreationForm
     success_url = '/'
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(self.success_url)
+        return super().get(request, *args, **kwargs)
+
     def form_valid(self, form):
         self.object = form.save()
         student = Student.objects.create(user=self.object)
