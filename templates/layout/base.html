@@ -34,7 +34,7 @@
                     {% if user.is_authenticated %}
                     <ul>
                         <li><a href="#"><i class="fa fa-user"></i><span>{{ user.username }}</span></a></li>
-                        <li><a href="#"><i class="fa fa-lock"></i><span>Log out</span></a></li>
+                        <li><a href="{% url 'students:logout' %}"><i class="fa fa-lock"></i><span>Log out</span></a></li>
                     </ul>
                     {% else %}
                     <ul>

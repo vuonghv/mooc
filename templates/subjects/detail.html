@@ -61,7 +61,13 @@
                         </li>
                     </ul>
                     {% if has_sessions %}
-                        <p><a class="btn btn-primary take-course">Take This Course</a></p>
+                        <div class="hidden">
+                            <form method="POST" action="{% url 'subjects:enroll' %}" id="enroll-session">
+                                {% csrf_token %}
+                                <input type="hidden" name="session" value="{{ subject.latest_session.pk }}">
+                            </form>
+                        </div>
+                        <p><a href="#" onclick="document.getElementById('enroll-session').submit();" class="btn btn-primary take-course">Take This Course</a></p>
                     {% endif %}
                     {% endwith %}
                     <p class="text-center share">		

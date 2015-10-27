@@ -1,7 +1,10 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
+from django.http import HttpResponseRedirect, HttpResponse
 
 from ars.subjects.models import Subject
+from ars.core.views import LoginRequiredMixin
+from ars.subjects.models import Enroll
 
 
 class ListSubjectView(ListView):
@@ -34,3 +37,20 @@ class DetailSubjectView(DetailView):
         }
         context.update(info)
         return context
+
+
+class EnrollSubjectView(LoginRequiredMixin, CreateView):
+    model = Enroll
+    fields = ['session']
+
+    def get(self, request, *args, **kwargs):
+        return HttpResponse()
+
+    def get_success_url(self):
+        return reverse('subjects:detail',
+                    kwargs={'pk': self.object.session.subject.pk})
+    
+    def form_valid(self, form):
+        form.instance.student = self.request.user.profile.student
+        self.object = form.save()
+        return HttpResponseRedirect(self.get_success_url())

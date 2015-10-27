@@ -15,7 +15,7 @@ from django.contrib.auth import login
 
 from ars.categories.models import Category
 from ars.courses.models import Course, TeacherCourse
-from ars.subjects.models import Subject, Session, Task, Endroll
+from ars.subjects.models import Subject, Session, Task, Enroll
 from ars.reviews.models import Review
 from ars.blog.models import Blog
 
@@ -32,8 +32,6 @@ class TeacherRequiredMixin(object):
     """docstring for TeacherRequiredMixin"""
     @method_decorator(staff_member_required)
     def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_superuser:
-            return HttpResponseRedirect(reverse('admin:dashboard'))
         return super().dispatch(request, *args, **kwargs)
 
 class LoginRequiredMixin(object):
@@ -63,7 +61,7 @@ class LoginView(FormView):
         login(self.request, admin)
         return super().form_valid(form)
 
-class DashboardView(LoginRequiredMixin, TemplateView):
+class DashboardView(TeacherRequiredMixin, TemplateView):
     template_name = 'admin/dashboard_index.html'
 
     def get_context_data(self, **kwargs):
@@ -290,7 +288,7 @@ class SubjectDetailView(TeacherRequiredMixin, DetailView):
         context['sessions'] = Session.objects.filter(subject=self.object)
         context['tasks'] = Task.objects.filter(session__subject=self.object,
                                 session__subject__course__teachers=self.request.user.profile.teacher).order_by('-id')
-        context['endrolls'] = Endroll.objects.filter(session__subject=self.object,
+        context['endrolls'] = Enroll.objects.filter(session__subject=self.object,
                                 session__subject__course__teachers=self.request.user.profile.teacher).order_by('-id')
         return context
 
