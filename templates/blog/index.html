@@ -106,14 +106,21 @@
                         </div>
                     </div>
                 {% endfor %}
-{{ blog.create_date|date:'d' }}
+
                 <!-- ==== PAGINATION START == -->
-                <ul class="pagination pull-right" data-scroll-reveal>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">Next <i class="fa fa-caret-right"></i></a></li>
-                </ul>
+                <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s, opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="row" data-scroll-reveal="">
+                    <div class="col-sm-6">
+                        {% if page_obj.has_previous %}                        
+                            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary lesson-prev"><i class="fa fa-caret-left"></i> &nbsp; Previous</a>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-sm-6 text-right">
+                        {% if page_obj.has_next %}                        
+                            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary lesson-next">Next &nbsp; <i class="fa fa-caret-right"></i></a>                        
+                        {% endif %}
+                    </div>
+                </div>
                 <!-- ==== PAGINATION END == -->
 
             </div>

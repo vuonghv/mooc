@@ -93,13 +93,12 @@
                         </div>
                         <h1>Morbi nec quam sed elit pharetra</h1>
                         <div class="meta">
-                            <span><i class="fa fa-user"></i><a href="#">John Doe</a></span>
-                            <span><i class="fa fa-tags"></i><a href="#">Chat</a>, <a href="#">Video</a></span>
+                            <span><i class="fa fa-user"></i><a href="#">{{ object.teacher.profile.user.username }}</a></span>
                             <span><i class="fa fa-comments"></i><a href="#">24</a></span>
                         </div>
-                        <p class="intro">Praesent dui diam, vestibulum id mi at, iaculis accumsan ligula. Vivamus erat ligula, condimentum quis congue posuere, posuere id nisi. Pellentesque tempor sit amet arcu in mattis. Nullam congue, lectus vitae ultrices interdum, augue nibh lacinia ante, et tempus arcu tellus quis ligula. Aliquam congue ex vitae turpis fermentum, ac tempor nisi commodo. Ut ante turpis, pulvinar eu arcu eu, blandit blandit sapien. Proin sagittis nibh lectus, lobortis ultrices.</p>
-                        <blockquote>Etiam est sem, aliquam a congue id, porttitor et massa. Sed velit mauris, viverra non mi sit amet, tempor semper turpis. Etiam tempus porttitor pharetra. Mauris a aliquam nisl. Duis dignissim velit purus, quis rhoncus nisl fringilla id. Phasellus consectetur facilisis ex, ac interdum ipsum consequat in. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae. Donec tincidunt in ipsum ut molestie.</blockquote>
-                        <p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur eu leo elit. Aliquam dapibus porta tellus, dictum sodales turpis ultricies ac. Cras mattis erat sit amet porttitor vehicula. Vivamus ultrices sem nulla, eget sagittis eros pulvinar at. Proin pretium convallis magna dapibus iaculis. Nunc nisl mauris, commodo in eleifend in, commodo id mauris. Suspendisse efficitur vel odio viverra scelerisque. Praesent tempus tincidunt magna vitae volutpat. Mauris id rutrum felis. Nulla facilisi. Quisque et nunc interdum, faucibus diam eget, sodales nunc. Vivamus eu velit et neque consequat congue.</p>
+                        <p class="intro">
+                            {{ object.content|safe }}
+                        </p>
                         
                         <p><a href="{% url 'blog:index' %}" class="btn btn-primary">Back</a></p>
                     </div>

@@ -9,6 +9,10 @@ class BlogView(ListView):
     model = Blog
     context_object_name = "list_blog"
     template_name = 'blog/index.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Blog.objects.order_by('-id')
 
     def get_context_data(self, **kwargs):
         context = super(BlogView, self).get_context_data(**kwargs)
