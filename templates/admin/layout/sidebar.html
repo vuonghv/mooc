@@ -40,6 +40,11 @@
                     <i class="fa fa-lightbulb-o"></i> <span>Subject</span>
                     </a>
                 </li>
+                <li class="{% if 'blog' in info.sidebar %} active {% endif %}">
+                    <a href="{% url 'admin:list_blog' %}">
+                    <i class="fa fa-newspaper-o"></i> <span>Blog</span>
+                    </a>
+                </li>                
             {% endif %}            
         </ul>
     </section>

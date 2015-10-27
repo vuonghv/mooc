@@ -46,4 +46,15 @@ urlpatterns = [
     url(r'^session/create/$', views.SessionCreateView.as_view(), name='create_session'),
     url(r'^task/create/$', views.TaskCreateView.as_view(), name='create_task'),
     url(r'^task/delete/(?P<pk>[0-9]+)/$', views.TaskDeleteView.as_view(), name='delete_task'),
+
+    #############################################################
+    #############################################################
+    #############################################################
+    # Url blog
+    url(r'^blog/$', views.BlogView.as_view(), name='list_blog'),
+    url(r'^blog/create/$', views.BlogCreateView.as_view(), name='create_blog'),
+    url(r'^blog/update/(?P<pk>[0-9]+)/$', views.BlogUpdateView.as_view(), 
+                                                                    name='update_blog'),
+    url(r'^blog/delete/(?P<pk>[0-9]+)/$', views.BlogDeleteView.as_view(), 
+                                                                    name='delete_blog'),
 ]
