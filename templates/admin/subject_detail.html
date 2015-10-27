@@ -2,6 +2,7 @@
 {% load staticfiles %}
 
 {% block 'css' %}
+    <link rel="stylesheet" href="{% static 'admin/plugins/select2/select2.min.css' %}">
 {% endblock %}
 
 {% block 'content' %}
@@ -12,8 +13,9 @@
             <small>Detail</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">User</li>
+            <li><a href="{% url 'admin:dashboard' %}"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="{% url 'admin:list_subject' %}"> Subject</a></li>
+            <li class="active">Detail</li>
         </ol>
     </section>
 
@@ -66,19 +68,121 @@
             <div class="col-md-9">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#activity" data-toggle="tab">Reviews</a></li>
-                        <li><a href="#timeline" data-toggle="tab">Timeline</a></li>
+                        <li class="active"><a href="#task" data-toggle="tab">Task</a></li>
+                        <li><a href="#reviews" data-toggle="tab">Reviews</a></li>
                         <li><a href="#sessions" data-toggle="tab">Sessions</a></li>
+                        <li><a href="#endrolls" data-toggle="tab">Endroll</a></li>
                     </ul>
-                    <div class="tab-content">
-                        <div class="active tab-pane" id="activity">
+                    <div class="tab-content">                        
+                        <div class="active tab-pane" id="task">
+                            <form class="form-horizontal" method="POST" action="{% url 'admin:create_task' %}">
+                                {% csrf_token %}
+                                <!--<div class="form-group {% if messages %} has-error {% endif %}">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-10">
+                                        {% for message in messages %}                                        
+                                            <span class="help-block">{{ message }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>-->
+                                
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Session</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control select2" name="session" data-placeholder="Select session" style="width: 100%;">
+                                            {% for session in sessions  %}
+                                                <option value="{{ session.id }}">{{ session.start_date|date:'d/m/Y' }} - {{ session.end_date|date:'d/m/Y' }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                                    <div class="col-sm-10">
+                                        <input id="id_name" type="text" class="form-control" name="name" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Slug</label>
+                                    <div class="col-sm-10">
+                                        <input id="id_slug" type="text" class="form-control" name="slug" />
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Content</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" name="content"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Start Date</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input name="start_date" type="text" class="datemask form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">End Date</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input name="end_date" type="text" class="datemask form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-danger">Save Task</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <hr/>
+
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Session</th>
+                                    <th>Name</th>
+                                    <th>Content</th>
+                                    <th class="text-center" style="width: 200px">Action</th>
+                                </tr>
+                                {% for task in tasks %}
+                                    <tr>
+                                        <td>{{ task.id }}.</td>
+                                        <td>{{ task.session.start_date|date:'d/m/Y' }} - {{ task.session.end_date|date:'d/m/Y' }}.</td>
+                                        <td>{{ task.name }}</td>
+                                        <td>{{ task.content }}</td>                                    
+                                        <td class="text-center">                                        
+                                            <a href="#" data-href="{% url 'admin:delete_task' task.id %}" data-toggle="modal" data-target="#confirm-delete">
+                                                <span class="badge bg-red">Delete</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="reviews">
                             {% for review in reviews %}
                                 <!-- Post -->
                                 <div class="post">
                                     <div class="user-block">
                                         <img class="img-circle img-bordered-sm" src="{% static 'admin/dist/img/user1-128x128.jpg' %}" alt="user image">
                                         <span class="username">
-                                        <a href="#">{{ review.student.user.username }}.</a>
+                                        <a href="#">{{ review.student.profile.user.username }}.</a>
                                         <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
                                         </span>
                                         <span class="description">{{ review.created_date }}</span>
@@ -92,117 +196,44 @@
                             {% endfor %}
                         </div>
                         <!-- /.tab-pane -->
-                        <div class="tab-pane" id="timeline">
-                            <!-- The timeline -->
-                            <ul class="timeline timeline-inverse">
-                                <!-- timeline time label -->
-                                <li class="time-label">
-                                    <span class="bg-red">
-                                    10 Feb. 2014
-                                    </span>
-                                </li>
-                                <!-- /.timeline-label -->
-                                <!-- timeline item -->
-                                <li>
-                                    <i class="fa fa-envelope bg-blue"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-                                        <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-                                        <div class="timeline-body">
-                                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                                            quora plaxo ideeli hulu weebly balihoo...
-                                        </div>
-                                        <div class="timeline-footer">
-                                            <a class="btn btn-primary btn-xs">Read more</a>
-                                            <a class="btn btn-danger btn-xs">Delete</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- END timeline item -->
-                                <!-- timeline item -->
-                                <li>
-                                    <i class="fa fa-user bg-aqua"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-                                        <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request
-                                        </h3>
-                                    </div>
-                                </li>
-                                <!-- END timeline item -->
-                                <!-- timeline item -->
-                                <li>
-                                    <i class="fa fa-comments bg-yellow"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
-                                        <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-                                        <div class="timeline-body">
-                                            Take me to your leader!
-                                            Switzerland is small and neutral!
-                                            We are more like Germany, ambitious and misunderstood!
-                                        </div>
-                                        <div class="timeline-footer">
-                                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- END timeline item -->
-                                <!-- timeline time label -->
-                                <li class="time-label">
-                                    <span class="bg-green">
-                                    3 Jan. 2014
-                                    </span>
-                                </li>
-                                <!-- /.timeline-label -->
-                                <!-- timeline item -->
-                                <li>
-                                    <i class="fa fa-camera bg-purple"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-                                        <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-                                        <div class="timeline-body">
-                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- END timeline item -->
-                                <li>
-                                    <i class="fa fa-clock-o bg-gray"></i>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- /.tab-pane -->
-                        <div class="tab-pane" id="sessions">
+                        <div class="tab-pane" id="sessions">                                                        
                             <form class="form-horizontal" method="POST" action="{% url 'admin:create_session' %}">
                                 {% csrf_token %}
+                                <div class="form-group {% if messages %} has-error {% endif %}">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-10">
+                                        {% for message in messages %}
+                                            {% if message.id == "session" %}
+                                                <span class="help-block">{{ message.msg }}</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
                                 <input type="hidden" value="{{ subject.pk }}" name="subject">
-                                <div class="form-group {% if form.start_date.errors %} has-error {% endif %}">
+                                <div class="form-group {% if form_session.start_date.errors %} has-error {% endif %}">
                                     <label for="inputName" class="col-sm-2 control-label">Start Date</label>
                                     <div class="col-sm-10">
                                         <div class="input-group">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input name="start_date" type="text" class="datemask form-control" value="{{ form.start_date.value|default_if_none:"" }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                            <input name="start_date" type="text" class="datemask form-control" value="{{ form_session.start_date.value|default_if_none:"" }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
                                         </div>
-                                        <span class="help-block">{{ form.start_date.errors }}</span>
+                                        <span class="help-block">{{ form_session.start_date.errors }}</span>
                                     </div>
                                 </div>
 
-                                <div class="form-group {% if form.end_date.errors %} has-error {% endif %}">
+                                <div class="form-group {% if form_session.end_date.errors %} has-error {% endif %}">
                                     <label for="inputName" class="col-sm-2 control-label">End Date</label>
                                     <div class="col-sm-10">
                                         <div class="input-group">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input name="end_date" type="text" class="datemask form-control" value="{{ form.end_date.value|default_if_none:"" }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                            <input name="end_date" type="text" class="datemask form-control" value="{{ form_session.end_date.value|default_if_none:"" }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
                                         </div>
-                                        <span class="help-block">{{ form.end_date.errors }}</span>
+                                        <span class="help-block">{{ form_session.end_date.errors }}</span>
                                     </div>
                                 </div>
 
@@ -214,6 +245,31 @@
                             </form>
                         </div>
                         <!-- /.tab-pane -->
+                        <div class="tab-pane" id="endrolls">                            
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Session</th>
+                                    <th>Subject</th>
+                                    <th>User</th>
+                                    <!--<th class="text-center" style="width: 200px">Action</th>-->
+                                </tr>
+                                {% for endroll in endrolls %}
+                                    <tr>
+                                        <td>{{ endroll.id }}.</td>
+                                        <td>{{ endroll.session.start_date|date:'d/m/Y' }} - {{ endroll.session.end_date|date:'d/m/Y' }}.</td>
+                                        <td>{{ endroll.session.subject.name }}</td>
+                                        <td>{{ endroll.content }}</td>
+                                        <td>{{ endroll.student.profile.user.username }}</td>
+                                        <!--<td class="text-center">                                        
+                                            <a href="#" data-href="{% url 'admin:delete_endroll' endroll.id %}" data-toggle="modal" data-target="#confirm-delete">
+                                                <span class="badge bg-red">Delete</span>
+                                            </a>
+                                        </td>-->
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
                     </div>
                     <!-- /.tab-content -->
                 </div>
@@ -230,9 +286,28 @@
     <script src="{% static 'admin/plugins/input-mask/jquery.inputmask.js' %}"></script>
     <script src="{% static 'admin/plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
     <script src="{% static 'admin/plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
-    <script type="text/javascript">        
+    <script src="{% static 'admin/plugins/select2/select2.full.min.js' %}"></script>
+    <script type="text/javascript">
+        $(".select2").select2();
         $(function() {
             $(".datemask").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        });
+
+        $("#id_name").keyup(function(){
+            var str = $(this).val();
+            str = str.toLowerCase();
+            str= str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a");
+            str= str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e");
+            str= str.replace(/ì|í|ị|ỉ|ĩ/g,"i");
+            str= str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o");
+            str= str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u");
+            str= str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y");
+            str= str.replace(/đ/g,"d");
+            str= str.replace(/!|@|\$|%|\^|\*|\(|\)|\+|\=|\&lt;|\&gt;|\?|\/|,|\.|\:|\'| |\"|\&amp;|\#|\[|\]|~/g,"-");
+            str= str.replace(/-+-/g,"-"); //thay thế 2- thành 1-
+            str= str.replace(/^\-+|\-+$/g,"");//cắt bỏ ký tự - ở đầu và cuối chuỗi
+            str = str.replace(/[^a-zA-Z0-9]+/g,'-');
+            $("#id_slug").val(str);        
         });
     </script>
 {% endblock %}

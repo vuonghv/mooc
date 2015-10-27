@@ -21,36 +21,31 @@
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="{% if 'category' in info.sidebar %} active {% endif %}">
-                <a href="{% url 'admin:list_category' %}">
-                <i class="fa fa-list"></i> <span>Category</span>
-                </a>
-            </li>
-            <li class="{% if 'course' in info.sidebar %} active {% endif %}">
-                <a href="{% url 'admin:list_course' %}">
-                <i class="fa fa-archive"></i> <span>Course</span>
-                </a>
-            </li>            
-            <li class="{% if 'subject' in info.sidebar %} active {% endif %}">
-                <a href="{% url 'admin:list_subject' %}">
-                <i class="fa fa-lightbulb-o"></i> <span>Subject</span>
-                </a>
-            </li>
-            <!--<li class="{% if 'request' in info.sidebar %} active {% endif %}">
-                <a href="/admin/request">
-                <i class="fa fa-tag"></i> <span>Request Buy Book</span>
-                </a>
-            </li>
-            <li class="{% if 'user' in info.sidebar %} active {% endif %}">
-                <a href="/admin/user">
-                <i class="fa fa-user"></i> <span>User</span>
-                </a>
-            </li>
-            <li class="{% if 'order' in info.sidebar %} active {% endif %}">
-                <a href="/admin/order">
-                <i class="fa fa-shopping-cart"></i> <span>Order</span>
-                </a>
-            </li>-->
+            {% if user.is_superuser %}
+                <li class="{% if 'category' in info.sidebar %} active {% endif %}">
+                    <a href="{% url 'admin:list_category' %}">
+                    <i class="fa fa-list"></i> <span>Category</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% if not user.is_superuser %}
+                <li class="{% if 'course' in info.sidebar %} active {% endif %}">
+                    <a href="{% url 'admin:list_course' %}">
+                    <i class="fa fa-archive"></i> <span>Course</span>
+                    </a>
+                </li>            
+                <li class="{% if 'subject' in info.sidebar %} active {% endif %}">
+                    <a href="{% url 'admin:list_subject' %}">
+                    <i class="fa fa-lightbulb-o"></i> <span>Subject</span>
+                    </a>
+                </li>
+                <li class="{% if 'blog' in info.sidebar %} active {% endif %}">
+                    <a href="{% url 'admin:list_blog' %}">
+                    <i class="fa fa-newspaper-o"></i> <span>Blog</span>
+                    </a>
+                </li>                
+            {% endif %}            
         </ul>
     </section>
     <!-- /.sidebar -->

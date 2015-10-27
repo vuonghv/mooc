@@ -1,5 +1,4 @@
 {% extends 'admin/layout/base.html' %}
-{% load staticfiles %}
 
 {% block 'css' %}
 {% endblock %}
@@ -8,12 +7,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Subject
+            Blog
             <small>List</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'admin:dashboard' %}"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Subject</li>
+            <li class="active">Blog</li>
         </ol>
     </section>
     <!-- Main content -->
@@ -23,7 +22,7 @@
                 <div class="box box-danger">
                     <div class="box-header with-border">
                         <div class="pull-right">
-                            <a class="btn btn-xs btn-warning" href="{% url 'admin:create_subject' %}">New Subject</a>
+                            <a class="btn btn-xs btn-warning" href="{% url 'admin:create_blog' %}">New Blog</a>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -32,26 +31,21 @@
                             <tr>
                                 <th style="width: 10px">#</th>
                                 <th>Name</th>
-                                <th>Course</th>
                                 <th>Description</th>
+                                <th>Status</th>
                                 <th class="text-center" style="width: 200px">Action</th>
                             </tr>
-                            {% for item in list_subject %}
+                            {% for item in list_blog %}
                                 <tr>
                                     <td>{{ item.id }}.</td>
-                                    <td>
-                                        <a href="{% url 'admin:detail_subject' item.id %}">{{ item.name }}</a>                                    
-                                    </td>
-                                    <td>{{ item.course }}</td>
-                                    <td>{{ item.description }}</td>                                    
-                                    <td class="text-center"> 
-                                        <a href="{% url 'admin:detail_subject' item.id %}">
-                                            <span class="badge bg-yellow">Detail</span>
-                                        </a>                                       
-                                        <a href="{% url 'admin:update_subject' item.id %}">
+                                    <td>{{ item.title }}</td>
+                                    <td>{{ item.description }}</td>
+                                    <td>{{ item.get_status_display }}</td>
+                                    <td class="text-center">                                        
+                                        <a href="{% url 'admin:update_blog' item.id %}">
                                             <span class="badge">Update</span>
                                         </a>
-                                        <a href="#" data-href="{% url 'admin:delete_subject' item.id %}" data-toggle="modal" data-target="#confirm-delete">
+                                        <a href="#" data-href="{% url 'admin:delete_blog' item.id %}" data-toggle="modal" data-target="#confirm-delete">
                                             <span class="badge bg-red">Delete</span>
                                         </a>
                                     </td>

@@ -37,8 +37,7 @@ class Session(models.Model):
         db_table = 'session'
 
     def __str__(self):
-        return 'Session of subject {}, starting on {}'.format(
-                                self.subject.name, self.start_date)
+        return '{} - {}'.format(self.start_date, self.end_date)
     
 class Task(Describable):
     session = models.ForeignKey(Session)
