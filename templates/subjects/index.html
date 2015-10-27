@@ -100,8 +100,7 @@
         <!-- ==== COURSES START == -->
         <div class="col-sm-8">
             <div class="courses">
-                {% if is_paginated %}
-                {% for subject in page_obj %}
+                {% for subject in object_list %}
                 <!-- Course Start -->
                 <div class="course row" data-scroll-reveal>
                     <div class="col-sm-4">
@@ -110,7 +109,7 @@
                     <div class="col-sm-8">
                         <div class="row">
                             <div class="col-md-9 col-sm-8">
-                                <h3><a href="courses-details-left-sidebar.html">{{ subject.name }}</a></h3>
+                                <h3><a href="{% url 'subjects:detail' subject.pk %}">{{ subject.name }}</a></h3>
                                 <div class="meta">
                                     <span><i class="fa fa-user"></i><a href="teachers-profile.html">{{ subject.course.creator.profile.user.username }}</a></span>
                                     <span><i class="fa fa-file-text"></i>4 Lessons</span>
@@ -137,6 +136,7 @@
                 </div>
                 <!-- Course End -->
                 {% endfor %} {# for object_list #}
+                {% if is_paginated %}
                 <!-- Pagination Start -->
                 <div class="row" data-scroll-reveal>
                     <div class="col-sm-6">
@@ -147,43 +147,6 @@
                     </div>
                 </div>
                 <!-- Pagination End -->
-                {% else %} {# if is_paginated #}
-                {% for subject in object_list %}
-                <!-- Course Start -->
-                <div class="course row" data-scroll-reveal>
-                    <div class="col-sm-4">
-                        <a href="courses-details-left-sidebar.html"><img src="{{ subject.image.url }}" alt="" class="img-responsive" /></a>
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="row">
-                            <div class="col-md-9 col-sm-8">
-                                <h3><a href="courses-details-left-sidebar.html">{{ subject.name }}</a></h3>
-                                <div class="meta">
-                                    <span><i class="fa fa-user"></i><a href="teachers-profile.html">{{ subject.course.creator.profile.user.username }}</a></span>
-                                    <span><i class="fa fa-file-text"></i>4 Lessons</span>
-                                    <span><i class="fa fa-folder"></i>
-                                        {% for category in subject.categories.all %}
-                                        <a href="#">{{ category }}</a>,&nbsp;
-                                        {% endfor %}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-4 price">$39.90</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <p>{{ subject.description|truncatewords:50 }}<br>
-                                    <a href="courses-details-left-sidebar.html">Read more <i class="fa fa-angle-right"></i></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <hr>
-                    </div>
-                </div>
-                <!-- Course End -->
-                {% endfor %} {# for object_list #}
                 {% endif %}
             </div>
         </div>
