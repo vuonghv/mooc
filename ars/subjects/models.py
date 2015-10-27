@@ -26,8 +26,17 @@ class Subject(Describable, Timestampable):
     def __str__(self):
         return self.name
 
+    @property
+    def latest_session(self):
+        try:
+            session = self.sessions.order_by('-id')[0]
+        except:
+            session = None
+        return session
+
+
 class Session(models.Model):
-    subject = models.ForeignKey(Subject)
+    subject = models.ForeignKey(Subject, related_name='sessions')
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 
@@ -54,14 +63,14 @@ class Task(Describable):
     def __str__(self):
         return 'Task {}'.format(self.name)
 
-class Endroll(Timestampable):
+class Enroll(Timestampable):
     session = models.ForeignKey(Session)
     student = models.ForeignKey(Student)
 
     class Meta:
-        verbose_name = "Endroll"
-        verbose_name_plural = "Endrolls"
-        db_table = 'endroll'
+        verbose_name = "Enroll"
+        verbose_name_plural = "Enrolls"
+        db_table = 'enroll'
 
     def __str__(self):
         return 'Student {} enrolled subject {}, start on {}'.format(

@@ -15,7 +15,7 @@
                 <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s, opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="widget" data-scroll-reveal="">
                     <ul>
                         <li class="price">
-                            Price <span class="pull-right">$39.90</span>
+                            Price <span class="pull-right">Free</span>
                         </li>
                         <li class="course-data">
                             <span class="icon icon-068"></span>
@@ -26,10 +26,6 @@
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </span>
-                        </li>
-                        <li class="course-data">
-                            <span class="icon icon-032"></span>
-                            <span class="pull-right">Web Design</span>
                         </li>
                         <li class="course-data">
                             <span class="icon icon-038"></span>
@@ -43,8 +39,31 @@
                             <span class="icon icon-006"></span>
                             <span class="pull-right">149 of 250 Students</span>
                         </li>
+                        {% with subject.sessions.exists as has_sessions %}
+                        {% if has_sessions %}
+                            <li class="course-data">
+                                <span class="icon icon-038"></span>
+                                <span class="pull-right">{{ subject.latest_session.start_date|date:"D d M Y" }}</span>
+                            </li>
+                            <li class="course-data">
+                                <span class="icon icon-038"></span>
+                                <span class="pull-right">{{ subject.latest_session.end_date|date:"D d M Y" }}</span>
+                            </li>
+                        {% endif %}
+                        <li class="course-data">
+                            <span>
+                                <ul class="list-inline">
+                                {% for category in subject.categories.all %}
+                                    <li><a href="#">{{ category }}</a></li>
+                                {% endfor %}
+                                </ul>
+                            </span>
+                        </li>
                     </ul>
-                    <p><a class="btn btn-primary take-course">Take This Course</a></p>
+                    {% if has_sessions %}
+                        <p><a class="btn btn-primary take-course">Take This Course</a></p>
+                    {% endif %}
+                    {% endwith %}
                     <p class="text-center share">		
                         <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
                         <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
@@ -54,12 +73,13 @@
                 <!-- ==== COURSE DATA END == -->
 
                 <!-- ==== TEACHER START == -->
+                {% for teacher in subject.course.teachers.all %}
                 <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s, opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="widget" data-scroll-reveal="">
                     <h3>Teacher</h3>
                     <div class="teacher row">
                         <div class="col-sm-12">
                             <img src="{% static 'frontend/images/thumb-teacher.jpg' %}" alt="" class="pull-left">
-                            <h5>John Doe</h5>
+                            <h5>{{ teacher.profile.user.username }}</h5>
                             <p>Web Design</p>
                         </div>
                     </div>
@@ -71,6 +91,7 @@ lorem non commodo. Vivamus mattis massa in ipsum molestie, eu aliquet
 lectus pulvinar.<br>
                     <a href="http://coffeecreamthemes.com/themes/smartway/site/teachers-profile.html">Read More <i class="fa fa-angle-right"></i></a></p>
                 </div>
+                {% endfor %}
                 <!-- ==== TEACHER END == -->
 
             </div>

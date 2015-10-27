@@ -7,7 +7,7 @@ from ars.subjects.models import Subject
 class ListSubjectView(ListView):
     model = Subject
     template_name = 'subjects/index.html'
-    paginate_by = 16
+    paginate_by = 6
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

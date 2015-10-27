@@ -69,3 +69,7 @@ class LoginStudentView(FormView):
         user = form.get_user()
         login(self.request, user)
         return HttpResponseRedirect(self.success_url)
+
+
+class EnrollSubjectView(CreateView):
+    pass

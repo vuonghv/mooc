@@ -18,10 +18,8 @@ class Course(Timestampable, Describable):
     @property
     def creator(self):
         try:
-            teacher = Teacher.objects.filter(
-                                    courses=self
-                                    ).filter(
-                                    courses__teachercourse__is_creator=True
+            teacher = Teacher.objects.filter(courses=self
+                                    ).filter(teachercourse__is_creator=True
                                     ).get()
         except MultipleObjectsReturned as err:
             print(err.strerror)
