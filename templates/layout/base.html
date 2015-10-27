@@ -55,11 +55,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="index.html" class="navbar-brand"><img src="{% static 'frontend/images/logo.png' %}" alt="Smartway - HTML Template" class="img-responsive logo" /></a>
+                    <a href="{% url 'home' %}" class="navbar-brand"><img src="{% static 'frontend/images/logo.png' %}" alt="Smartway - HTML Template" class="img-responsive logo" /></a>
                 </div>
                 <nav class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="{% url 'home' %}">Home</a></li>
                         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Courses<b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="courses-list-left-sidebar.html">Courses List - Left Sidebar</a></li>
@@ -194,28 +194,33 @@
                 <!-- ==== COURSES START == -->
                 <div class="col-sm-8">
                     <div class="courses">
+                        {% if is_paginated %}
+                        {% for subject in page_obj %}
                         <!-- Course Start -->
                         <div class="course row" data-scroll-reveal>
                             <div class="col-sm-4">
-                                <a href="courses-details-left-sidebar.html"><img src="{% static 'frontend/images/course01.jpg' %}" alt="" class="img-responsive" /></a>
+                                <a href="{% url 'subjects:detail' subject.pk %}"><img src="{{ subject.image.url }}" alt="" class="img-responsive" /></a>
                             </div>
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-md-9 col-sm-8">
-                                        <h3><a href="courses-details-left-sidebar.html">Creative Website Design and Development</a></h3>
+                                        <h3><a href="courses-details-left-sidebar.html">{{ subject.name }}</a></h3>
                                         <div class="meta">
-                                            <span><i class="fa fa-user"></i><a href="teachers-profile.html">John Doe</a></span>
+                                            <span><i class="fa fa-user"></i><a href="teachers-profile.html">{{ subject.course.creator.profile.user.username }}</a></span>
                                             <span><i class="fa fa-file-text"></i>4 Lessons</span>
-                                            <span><i class="fa fa-folder"></i><a href="#">Design</a></span>
+                                            <span><i class="fa fa-folder"></i>
+                                                {% for category in subject.categories.all %}
+                                                <a href="#">{{ category }}</a>,&nbsp;
+                                                {% endfor %}
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-4 price">$39.90</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget lorem non commodo. Vivamus mattis massa in ipsum molestie, eu aliquet lectus pulvinar.
-                                            <br>
-                                            <a href="courses-details-left-sidebar.html">Read more <i class="fa fa-angle-right"></i></a>
+                                        <p>{{ subject.description|truncatewords:50 }}<br>
+                                            <a href="{% url 'subjects:detail' subject.pk %}">Read more <i class="fa fa-angle-right"></i></a>
                                         </p>
                                     </div>
                                 </div>
@@ -225,171 +230,55 @@
                             </div>
                         </div>
                         <!-- Course End -->
-                        <!-- Course Start -->
-                        <div class="course row" data-scroll-reveal>
-                            <div class="col-sm-4">
-                                <a href="courses-details-left-sidebar.html"><img src="{% static 'frontend/images/course02.jpg' %}" alt="" class="img-responsive" /></a>
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="row">
-                                    <div class="col-md-9 col-sm-8">
-                                        <h3><a href="courses-details-left-sidebar.html">Introducing to Digital Photography</a></h3>
-                                        <div class="meta">
-                                            <span><i class="fa fa-user"></i><a href="teachers-profile.html">John Doe</a></span>
-                                            <span><i class="fa fa-file-text"></i>4 Lessons</span>
-                                            <span><i class="fa fa-folder"></i><a href="#">Photography</a></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-4 price">$29.90</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget lorem non commodo. Vivamus mattis massa in ipsum molestie, eu aliquet lectus pulvinar.
-                                            <br>
-                                            <a href="courses-details-left-sidebar.html">Read more <i class="fa fa-angle-right"></i></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <hr>
-                            </div>
-                        </div>
-                        <!-- Course End -->
-                        <!-- Course Start -->
-                        <div class="course row" data-scroll-reveal>
-                            <div class="col-sm-4">
-                                <a href="courses-details-left-sidebar.html"><img src="{% static 'frontend/images/course03.jpg' %}" alt="" class="img-responsive" /></a>
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="row">
-                                    <div class="col-md-9 col-sm-8">
-                                        <h3><a href="courses-details-left-sidebar.html">Adobe Illustrator and Vector Design Basics</a></h3>
-                                        <div class="meta">
-                                            <span><i class="fa fa-user"></i><a href="teachers-profile.html">John Doe</a></span>
-                                            <span><i class="fa fa-file-text"></i>4 Lessons</span>
-                                            <span><i class="fa fa-folder"></i><a href="#">Illustration</a></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-4 price">$19.90</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget lorem non commodo. Vivamus mattis massa in ipsum molestie, eu aliquet lectus pulvinar.
-                                            <br>
-                                            <a href="courses-details-left-sidebar.html">Read more <i class="fa fa-angle-right"></i></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <hr>
-                            </div>
-                        </div>
-                        <!-- Course End -->
-                        <!-- Course Start -->
-                        <div class="course row" data-scroll-reveal>
-                            <div class="col-sm-4">
-                                <a href="courses-details-left-sidebar.html"><img src="{% static 'frontend/images/course04.jpg' %}" alt="" class="img-responsive" /></a>
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="row">
-                                    <div class="col-md-9 col-sm-8">
-                                        <h3><a href="courses-details-left-sidebar.html">Composition and Lighting Advanced Course</a></h3>
-                                        <div class="meta">
-                                            <span><i class="fa fa-user"></i><a href="teachers-profile.html">John Doe</a></span>
-                                            <span><i class="fa fa-file-text"></i>4 Lessons</span>
-                                            <span><i class="fa fa-folder"></i><a href="#">Photography</a></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-4 price">$9.90</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget lorem non commodo. Vivamus mattis massa in ipsum molestie, eu aliquet lectus pulvinar.
-                                            <br>
-                                            <a href="courses-details-left-sidebar.html">Read more <i class="fa fa-angle-right"></i></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <hr>
-                            </div>
-                        </div>
-                        <!-- Course End -->
-                        <!-- Course Start -->
-                        <div class="course row" data-scroll-reveal>
-                            <div class="col-sm-4">
-                                <a href="courses-details-left-sidebar.html"><img src="{% static 'frontend/images/course05.jpg' %}" alt="" class="img-responsive" /></a>
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="row">
-                                    <div class="col-md-9 col-sm-8">
-                                        <h3><a href="courses-details-left-sidebar.html">Web Design and Development Premium Course</a></h3>
-                                        <div class="meta">
-                                            <span><i class="fa fa-user"></i><a href="teachers-profile.html">John Doe</a></span>
-                                            <span><i class="fa fa-file-text"></i>4 Lessons</span>
-                                            <span><i class="fa fa-folder"></i><a href="#">Development</a></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-4 price">$35.90</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget lorem non commodo. Vivamus mattis massa in ipsum molestie, eu aliquet lectus pulvinar.
-                                            <br>
-                                            <a href="courses-details-left-sidebar.html">Read more <i class="fa fa-angle-right"></i></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <hr>
-                            </div>
-                        </div>
-                        <!-- Course End -->
-                        <!-- Course Start -->
-                        <div class="course row" data-scroll-reveal>
-                            <div class="col-sm-4">
-                                <a href="courses-details-left-sidebar.html"><img src="{% static 'frontend/images/course12.jpg' %}" alt="" class="img-responsive" /></a>
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="row">
-                                    <div class="col-md-9 col-sm-8">
-                                        <h3><a href="courses-details-left-sidebar.html">Advanced Web Development Course</a></h3>
-                                        <div class="meta">
-                                            <span><i class="fa fa-user"></i><a href="teachers-profile.html">John Doe</a></span>
-                                            <span><i class="fa fa-file-text"></i>4 Lessons</span>
-                                            <span><i class="fa fa-folder"></i><a href="#">Development</a></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-sm-4 price">$32.90</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget lorem non commodo. Vivamus mattis massa in ipsum molestie, eu aliquet lectus pulvinar.
-                                            <br>
-                                            <a href="courses-details-left-sidebar.html">Read more <i class="fa fa-angle-right"></i></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <hr>
-                            </div>
-                        </div>
-                        <!-- Course End -->
+                        {% endfor %} {# for object_list #}
                         <!-- Pagination Start -->
                         <div class="row" data-scroll-reveal>
                             <div class="col-sm-6">
-                                <a class="btn btn-primary lesson-prev"><i class="fa fa-caret-left"></i> &nbsp; Previous</a>
+                                <a class="btn btn-primary lesson-prev {{ page_obj.has_previous|yesno:',disabled' }}" href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number}}{% else %}{{ page_obj.number }}{% endif %}"><i class="fa fa-caret-left"></i> &nbsp; Previous</a>
                             </div>
                             <div class="col-sm-6 text-right">
-                                <a class="btn btn-primary lesson-next">Next &nbsp; <i class="fa fa-caret-right"></i></a>
+                                <a class="btn btn-primary lesson-next {{ page_obj.has_next|yesno:',disabled' }}" href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number}}{% else %}{{ page_obj.number }}{% endif %}">Next &nbsp; <i class="fa fa-caret-right"></i></a>
                             </div>
                         </div>
                         <!-- Pagination End -->
+                        {% else %} {# if is_paginated #}
+                        {% for subject in object_list %}
+                        <!-- Course Start -->
+                        <div class="course row" data-scroll-reveal>
+                            <div class="col-sm-4">
+                                <a href="courses-details-left-sidebar.html"><img src="{{ subject.image.url }}" alt="" class="img-responsive" /></a>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-md-9 col-sm-8">
+                                        <h3><a href="courses-details-left-sidebar.html">{{ subject.name }}</a></h3>
+                                        <div class="meta">
+                                            <span><i class="fa fa-user"></i><a href="teachers-profile.html">{{ subject.course.creator.profile.user.username }}</a></span>
+                                            <span><i class="fa fa-file-text"></i>4 Lessons</span>
+                                            <span><i class="fa fa-folder"></i>
+                                                {% for category in subject.categories.all %}
+                                                <a href="#">{{ category }}</a>,&nbsp;
+                                                {% endfor %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-4 price">$39.90</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p>{{ subject.description|truncatewords:50 }}<br>
+                                            <a href="courses-details-left-sidebar.html">Read more <i class="fa fa-angle-right"></i></a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
+                        </div>
+                        <!-- Course End -->
+                        {% endfor %} {# for object_list #}
+                        {% endif %}
                     </div>
                 </div>
                 <!-- ==== COURSES END == -->
@@ -398,6 +287,9 @@
         {% endblock content %}
     </section>
     <!-- ========== CONTENT END ========== -->
+<!-- ========== RELATED COURSES START ========== -->
+{% block related_subjects %}{% endblock related_subjects %}
+<!-- ========== RELATED COURSES END ========== -->
     <!-- ========== LINKS START ========== -->
     <div id="links">
         <div class="container">

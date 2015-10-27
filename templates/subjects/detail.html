@@ -1,0 +1,256 @@
+{% extends 'layout/base.html' %}
+{% load staticfiles %}
+
+<!-- ========== CONTENT START ========== -->
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+
+            <!-- ==== SIDEBAR START == -->
+
+            <div class="col-sm-4">
+
+                <!-- ==== COURSE DATA START == -->
+                <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s, opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="widget" data-scroll-reveal="">
+                    <ul>
+                        <li class="price">
+                            Price <span class="pull-right">$39.90</span>
+                        </li>
+                        <li class="course-data">
+                            <span class="icon icon-068"></span>
+                            <span class="pull-right">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </span>
+                        </li>
+                        <li class="course-data">
+                            <span class="icon icon-032"></span>
+                            <span class="pull-right">Web Design</span>
+                        </li>
+                        <li class="course-data">
+                            <span class="icon icon-038"></span>
+                            <span class="pull-right">4 lessons</span>
+                        </li>
+                        <li class="course-data">
+                            <span class="icon icon-036"></span>
+                            <span class="pull-right">Course Certificate</span>
+                        </li>
+                        <li class="course-data">
+                            <span class="icon icon-006"></span>
+                            <span class="pull-right">149 of 250 Students</span>
+                        </li>
+                    </ul>
+                    <p><a class="btn btn-primary take-course">Take This Course</a></p>
+                    <p class="text-center share">		
+                        <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+                        <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
+                        <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
+                    </p>
+                </div>
+                <!-- ==== COURSE DATA END == -->
+
+                <!-- ==== TEACHER START == -->
+                <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s, opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="widget" data-scroll-reveal="">
+                    <h3>Teacher</h3>
+                    <div class="teacher row">
+                        <div class="col-sm-12">
+                            <img src="{% static 'frontend/images/thumb-teacher.jpg' %}" alt="" class="pull-left">
+                            <h5>John Doe</h5>
+                            <p>Web Design</p>
+                        </div>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
+nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
+purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
+lorem non commodo. Vivamus mattis massa in ipsum molestie, eu aliquet 
+lectus pulvinar.<br>
+                    <a href="http://coffeecreamthemes.com/themes/smartway/site/teachers-profile.html">Read More <i class="fa fa-angle-right"></i></a></p>
+                </div>
+                <!-- ==== TEACHER END == -->
+
+            </div>
+
+            <!-- ==== SIDEBAR END == -->
+
+            <!-- ==== COURSES START == -->
+
+            <div class="col-sm-8">
+                <h1>{{ subject.name }}</h1>
+                <p>{{ subject.description }}</p>
+                <hr>
+                <h3>Lessons</h3>
+                <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
+                <div class="meta">
+                    <span><i class="fa fa-clock-o"></i>12 Minutes</span>
+                    <span><i class="fa fa-dashboard"></i>Easy</span>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
+nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
+purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
+lorem non commodo.</p>
+                <hr>
+                <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
+                <div class="meta">
+                    <span><i class="fa fa-clock-o"></i>12 Minutes</span>
+                    <span><i class="fa fa-dashboard"></i>Easy</span>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
+nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
+purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
+lorem non commodo.</p>
+                <hr>
+                <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
+                <div class="meta">
+                    <span><i class="fa fa-clock-o"></i>12 Minutes</span>
+                    <span><i class="fa fa-dashboard"></i>Easy</span>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
+nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
+purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
+lorem non commodo.</p>
+                <hr>
+                <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
+                <div class="meta">
+                    <span><i class="fa fa-clock-o"></i>12 Minutes</span>
+                    <span><i class="fa fa-dashboard"></i>Easy</span>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
+nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
+purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
+lorem non commodo.</p>
+                <hr>
+                <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(24px);transform: translatey(24px);opacity: 0;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="row" data-scroll-reveal="">
+                    <div class="col-sm-6">
+                        <a class="btn btn-primary lesson-prev"><i class="fa fa-caret-left"></i> &nbsp; Previous Course Title</a>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <a class="btn btn-primary lesson-next">Next Course Title &nbsp; <i class="fa fa-caret-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==== COURSES END == -->
+
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- ========== CONTENT END ========== -->
+
+<!-- ========== RELATED COURSES START ========== -->
+{% block related_subjects %}
+<section id="featured-posts" class="alt-background">
+    <div class="container">
+        
+        <h2 class="text-center carousel-title">
+            Related Courses
+            <a href="#">View All Courses</a>
+        </h2>
+
+        <!-- OWL CAROUSEL START -->
+        <div class="owl-carousel owl-theme owl-loaded">
+            
+            
+            
+            
+            
+            
+            
+            
+
+        <div class="owl-stage-outer"><div style="transform: translate3d(-1950px, 0px, 0px); transition: all 1.5s ease 0s; width: 3900px;" class="owl-stage"><div style="width: 360px; margin-right: 30px;" class="owl-item cloned"><div class="item">
+                        <a href="#"><img src="{% static 'frontend/images/course02.jpg' %}" alt="" class="img-responsive"></a>
+                <h3><a href="#">Introducing to Digital Photography</a></h3>
+                <div class="meta">
+                    <p><a href="#">by John Doe</a></p>
+                    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+                </div>
+                <div class="price">$29.90</div>
+            </div></div><div style="width: 360px; margin-right: 30px;" class="owl-item cloned"><div class="item">
+                    <a href="#"><img src="{% static 'frontend/images/course03.jpg' %}" alt="" class="img-responsive"></a>
+                <h3><a href="#">Adobe Illustrator and Vector Design Basics</a></h3>
+                <div class="meta">
+                    <p><a href="#">by John Doe</a></p>
+                    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+                </div>
+                <div class="price">$34.90</div>
+            </div></div><div style="width: 360px; margin-right: 30px;" class="owl-item cloned"><div class="item">
+                    <a href="#"><img src="{% static 'frontend/images/course04.jpg' %}" alt="" class="img-responsive"></a>
+                <h3><a href="#">Introduction to Search Engine Optimisation</a></h3>
+                <div class="meta">
+                    <p><a href="#">by John Doe</a></p>
+                    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+                </div>
+                <div class="price">$27.90</div>
+            </div></div><div style="width: 360px; margin-right: 30px;" class="owl-item"><div class="item">
+                    <a href="#"><img src="{% static 'frontend/images/course01.jpg' %}" alt="" class="img-responsive"></a>
+                <h3><a href="#">Creative Website Design	and Development</a></h3>
+                <div class="meta">
+                    <p><a href="#">by John Doe</a></p>
+                    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+                </div>
+                <div class="price">$39.90</div>
+            </div></div><div style="width: 360px; margin-right: 30px;" class="owl-item"><div class="item">
+                    <a href="#"><img src="{% static 'frontend/images/course02.jpg' %}" alt="" class="img-responsive"></a>
+                <h3><a href="#">Introducing to Digital Photography</a></h3>
+                <div class="meta">
+                    <p><a href="#">by John Doe</a></p>
+                    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+                </div>
+                <div class="price">$29.90</div>
+            </div></div><div style="width: 360px; margin-right: 30px;" class="owl-item active"><div class="item">
+                    <a href="#"><img src="{% static 'frontend/images/course03.jpg' %}" alt="" class="img-responsive"></a>
+                <h3><a href="#">Adobe Illustrator and Vector Design Basics</a></h3>
+                <div class="meta">
+                    <p><a href="#">by John Doe</a></p>
+                    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+                </div>
+                <div class="price">$34.90</div>
+            </div></div><div style="width: 360px; margin-right: 30px;" class="owl-item active"><div class="item">
+                    <a href="#"><img src="{% static 'frontend/images/course04.jpg' %}" alt="" class="img-responsive"></a>
+                <h3><a href="#">Introduction to Search Engine Optimisation</a></h3>
+                <div class="meta">
+                    <p><a href="#">by John Doe</a></p>
+                    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+                </div>
+                <div class="price">$27.90</div>
+            </div></div><div style="width: 360px; margin-right: 30px;" class="owl-item cloned active"><div class="item">
+                    <a href="#"><img src="{% static 'frontend/images/course01.jpg' %}" alt="" class="img-responsive"></a>
+                <h3><a href="#">Creative Website Design	and Development</a></h3>
+                <div class="meta">
+                    <p><a href="#">by John Doe</a></p>
+                    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+                </div>
+                <div class="price">$39.90</div>
+            </div></div><div style="width: 360px; margin-right: 30px;" class="owl-item cloned"><div class="item">
+                    <a href="#"><img src="{% static 'frontend/images/course02.jpg' %}" alt="" class="img-responsive"></a>
+                <h3><a href="#">Introducing to Digital Photography</a></h3>
+                <div class="meta">
+                    <p><a href="#">by John Doe</a></p>
+                    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+                </div>
+                <div class="price">$29.90</div>
+            </div></div><div style="width: 360px; margin-right: 30px;" class="owl-item cloned"><div class="item">
+                    <a href="#"><img src="{% static 'frontend/images/course03.jpg' %}" alt="" class="img-responsive"></a>
+                <h3><a href="#">Adobe Illustrator and Vector Design Basics</a></h3>
+                <div class="meta">
+                    <p><a href="#">by John Doe</a></p>
+                    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+                </div>
+                <div class="price">$34.90</div>
+            </div></div></div></div><div class="owl-controls"><div class="owl-nav"><div style="" class="owl-prev"><a class="btn btn-primary"><i class="fa fa-caret-left"></i></a></div><div style="" class="owl-next"><a class="btn btn-primary"><i class="fa fa-caret-right"></i></a></div></div><div class="owl-dots" style="display: none;"></div></div></div>
+        <!-- OWL CAROUSEL END -->
+
+    </div>
+</section>
+{% endblock related_subjects %}
+<!-- ========== RELATED COURSES END ========== -->

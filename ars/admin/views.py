@@ -129,7 +129,8 @@ class CourseView(AdminRequiredMixin, ListView):
     template_name = 'admin/course_index.html'
 
     def get_queryset(self):
-        return Course.objects.filter(teachers=self.request.user.teacher).order_by('-id')
+        return Course.objects.filter(
+                teachers=self.request.user.profile.teacher).order_by('-id')
 
     def get_context_data(self, **kwargs):
         context = super(CourseView, self).get_context_data(**kwargs)
@@ -157,7 +158,9 @@ class CourseCreateView(AdminRequiredMixin, CreateView):
 
     def form_valid(self, form):
         course = form.save()
-        TeacherCourse.objects.create(teacher=self.request.user.teacher, course=course, is_creator=True)
+        TeacherCourse.objects.create(
+                                teacher=self.request.user.profile.teacher,
+                                course=course, is_creator=True)
         return super(CourseCreateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -201,7 +204,8 @@ class SubjectView(AdminRequiredMixin, ListView):
     template_name = 'admin/subject_index.html'
 
     def get_queryset(self):
-        return Subject.objects.filter(course__teachers=self.request.user.teacher).order_by('-id')
+        return Subject.objects.filter(
+                course__teachers=self.request.user.profile.teacher).order_by('-id')
 
     def get_context_data(self, **kwargs):
         context = super(SubjectView, self).get_context_data(**kwargs)
@@ -260,8 +264,10 @@ class SubjectDetailView(AdminRequiredMixin, DetailView):
             'sidebar': ['subject']
         }
         context['info'] = info
-        context['reviews'] = Review.objects.filter(subject=self.object, 
-                                            subject__course__teachers=self.request.user.teacher).order_by('-id')
+        context['reviews'] = Review.objects.filter(
+                                    subject=self.object, 
+                                    subject__course__teachers=self.request.user.profile.teacher
+                                    ).order_by('-id')
         context['sessions'] = Session.objects.filter(subject=self.object)
         return context
 
