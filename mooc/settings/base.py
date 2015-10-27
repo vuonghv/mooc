@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'ars.blog',
     'ars.subjects',
     'ars.reviews',
+    'ars.about',
 ]
 
 MIDDLEWARE_CLASSES = (

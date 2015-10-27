@@ -1,0 +1,61 @@
+{% extends 'layout/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h1>Contact Details</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-xs-3">
+                        <i class="fa fa-map-marker fa-5x primary-color"></i>
+                    </div>
+                    <div class="col-lg-10 col-xs-9">
+                        <h3 class="no-margin">Address</h3>
+                        Smartway Learning Centre<br>
+                        8699 Santa Monica Blvd<br>
+                        Los Angeles, CA 90069-4109
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-xs-3">
+                        <i class="fa fa-phone fa-5x primary-color"></i>
+                    </div>
+                    <div class="col-lg-10 col-xs-9">
+                        <h3 class="no-margin">Phone &amp; Fax</h3>
+                        Phone: <a href="tel:1800123456">1800-123-456</a><br>
+                        Fax: <a href="tel:1800123456">1800-123-456</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-xs-3">
+                        <i class="fa fa-envelope fa-4x primary-color"></i>
+                    </div>
+                    <div class="col-lg-10 col-xs-9">
+                        <h3 class="no-margin">Email</h3>
+                        Email: <a href="mailto:info@smartway.com">info@smartway.com</a><br>
+                        Email: <a href="mailto:courses@smartway.com">courses@smartway.com</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <p>&nbsp;</p>
+                <img src="{% static 'frontend/images/contact.jpg' %}" alt="" class="img-responsive">
+            </div>
+        </div>
+    </div>
+{% endblock %}

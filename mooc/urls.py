@@ -32,4 +32,6 @@ urlpatterns = [
     url(r'^teachers/', include('ars.teachers.urls', namespace='teachers')),
     url(r'^students/', include('ars.students.urls', namespace='students')),
     url(r'^subjects/', include('ars.subjects.urls', namespace='subjects')),
+    url(r'^about-us/', include('ars.about.urls', namespace='about')),
+    url(r'^contact/', include('ars.contact.urls', namespace='contact')),
 ]
