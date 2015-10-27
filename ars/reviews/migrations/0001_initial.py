@@ -7,15 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('students', '0001_initial'),
         ('subjects', '0001_initial'),
+        ('students', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Review',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
                 ('rating', models.IntegerField(choices=[(1, 'One star'), (2, 'Two stars'), (3, 'Three stars'), (4, 'Four stars'), (5, 'Five stars')], default=4)),
@@ -25,8 +25,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name_plural': 'Reviews',
-                'db_table': 'review',
                 'verbose_name': 'Review',
+                'db_table': 'review',
             },
         ),
     ]

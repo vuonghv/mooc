@@ -14,8 +14,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Student',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('profile', models.OneToOneField(related_name='student', to='core.UserProfile', default=None)),
+                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('profile', models.OneToOneField(default=None, related_name='student', to='core.UserProfile')),
             ],
             options={
                 'db_table': 'student',
