@@ -1,0 +1,167 @@
+{% extends 'layout/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+
+            <!-- ==== SIDEBAR START == -->
+
+            <div class="col-sm-4">
+
+                <!-- ==== CATEGORIES START == -->
+                <div class="widget" data-scroll-reveal>
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-arrow-right"></i><span>Image</span></a></li>
+                        <li><a href="#"><i class="fa fa-arrow-right"></i><span>Gallery</span></a></li>
+                        <li><a href="#"><i class="fa fa-arrow-right"></i><span>Video</span></a></li>
+                        <li><a href="#"><i class="fa fa-arrow-right"></i><span>Audio</span></a></li>
+                        <li><a href="#"><i class="fa fa-arrow-right"></i><span>News</span></a></li>
+                    </ul>
+                </div>
+                <!-- ==== CATEGORIES END == -->
+
+                <!-- ==== NEWSLETTER START == -->
+                <div class="widget" data-scroll-reveal>
+                    <h3>Newsletter</h3>
+                    <form role="form" name="newsletter-form" id="newsletter-form" action="process-newsletter.php">
+                        <div class="form-group" id="newsletter-name-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="newsletter-input-name" placeholder="Name">
+                                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                            </div>
+                        </div>
+                        <div class="form-group" id="newsletter-email-group">
+                            <div class="input-group">
+                                <input type="email" class="form-control" id="newsletter-input-email" placeholder="Email">
+                                <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <!-- ==== NEWSLETTER END == -->
+
+                <!-- ==== LATEST POSTS START == -->
+                <div class="widget" data-scroll-reveal>
+                    <h3>Latest posts</h3>
+                    <div class="post row">
+                        <div class="col-md-4">
+                            <a href="#"><img src="images/sidebar-post1.jpg" alt="" class="img-responsive" /></a>
+                        </div>
+                        <div class="col-md-8">
+                            <h5><a href="#">Morbi nec quam sed elit pharetra</a></h5>
+                            <div class="meta">Posted Aug 18, 2015 by John Doe in Category Name</div>
+                        </div>
+                    </div>
+                    <div class="post row">
+                        <div class="col-md-4">
+                            <a href="#"><img src="images/sidebar-post2.jpg" alt="" class="img-responsive" /></a>
+                        </div>
+                        <div class="col-md-8">
+                            <h5><a href="#">Morbi nec quam sed elit pharetra</a></h5>
+                            <div class="meta">Posted Aug 18, 2015 by John Doe in Category Name</div>
+                        </div>
+                    </div>
+                    <div class="post row">
+                        <div class="col-md-4">
+                            <a href="#"><img src="images/sidebar-post3.jpg" alt="" class="img-responsive" /></a>
+                        </div>
+                        <div class="col-md-8">
+                            <h5><a href="#">Morbi nec quam sed elit pharetra</a></h5>
+                            <div class="meta">Posted Aug 18, 2015 by John Doe in Category Name</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ==== LATEST POSTS END == -->
+            </div>
+
+            <!-- ==== SIDEBAR END == -->
+
+            <!-- ==== BLOG START == -->
+
+            <div class="col-sm-8">
+                <!-- ==== POST START == -->
+
+                <div class="post row">
+                    <div class="col-md-12">
+                        <img src="{{ object.get_image_url }}" alt="" class="img-responsive post-cover" />
+                        <div class="post-date">
+                            <div class="post-day">28</div>
+                            <div class="post-month">Sep</div>
+                        </div>
+                        <h1>Morbi nec quam sed elit pharetra</h1>
+                        <div class="meta">
+                            <span><i class="fa fa-user"></i><a href="#">{{ object.teacher.profile.user.username }}</a></span>
+                            <span><i class="fa fa-comments"></i><a href="#">24</a></span>
+                        </div>
+                        <p class="intro">
+                            {{ object.content|safe }}
+                        </p>
+                        
+                        <p><a href="{% url 'blog:index' %}" class="btn btn-primary">Back</a></p>
+                    </div>
+                </div>
+
+                <!-- ==== POST END == -->
+
+                <!-- ==== COMMENTS START ==== -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>Comments</h3>
+                        <ul class="media-list">
+                            <li class="media">
+                                <a class="pull-left media-photo" href="#"><img class="media-object img-responsive" src="{% static 'frontend/images/comment1.jpg' %}" alt="" /></a>
+                                <div class="media-body">
+                                    <h5 class="media-heading">John Doe</h5>
+                                    <p class="meta">
+                                        <span><i class="fa fa-calendar"></i>April 27th, 2014</span>
+                                    </p>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit id nisi non varius. Aliquam erat volutpat. Pellentesque in dolor vel tortor placerat rutrum. Aenean suscipit lacus nec adipiscing tristique. Mauris semper aliquam purus eu tempor. Etiam gravida, lorem vel imperdiet ullamcorper, est mauris lacinia elit, ut sollicitudin tellus erat et felis. Vestibulum id rhoncus sapien. Mauris scelerisque imperdiet mollis. Nullam eu volutpat urna, quis facilisis metus.</p>                                    
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- ==== COMMENTS END ==== -->
+
+                <!-- ==== COMMENT FORM START ==== -->
+                <div class="row">
+                    <div class="col-sm-12" data-scroll-reveal>
+                        <hr>
+                        <h3>Write a Comment</h3>
+                    </div>
+                </div>
+                <form role="form">
+                    <div class="row" data-scroll-reveal>
+                        <div class="form-group col-sm-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="input-comment-name" placeholder="Name">
+                                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="input-group">
+                                <input type="email" class="form-control" id="input-comment-email" placeholder="Email">
+                                <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" data-scroll-reveal>
+                        <div class="form-group col-sm-12">
+                            <textarea class="form-control" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="row" data-scroll-reveal>
+                        <div class="form-group col-sm-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- ==== COMMENTS FORM END ==== -->
+            </div>
+            <!-- ==== BLOG END == -->
+        </div>
+    </div>
+{% endblock %}
