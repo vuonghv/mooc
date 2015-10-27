@@ -71,19 +71,20 @@
                         <li class="active"><a href="#task" data-toggle="tab">Task</a></li>
                         <li><a href="#reviews" data-toggle="tab">Reviews</a></li>
                         <li><a href="#sessions" data-toggle="tab">Sessions</a></li>
+                        <li><a href="#endrolls" data-toggle="tab">Endroll</a></li>
                     </ul>
                     <div class="tab-content">                        
                         <div class="active tab-pane" id="task">
                             <form class="form-horizontal" method="POST" action="{% url 'admin:create_task' %}">
                                 {% csrf_token %}
-                                <div class="form-group {% if messages %} has-error {% endif %}">
+                                <!--<div class="form-group {% if messages %} has-error {% endif %}">
                                     <div class="col-sm-2"></div>
                                     <div class="col-sm-10">
                                         {% for message in messages %}                                        
                                             <span class="help-block">{{ message }}</span>
                                         {% endfor %}
                                     </div>
-                                </div>
+                                </div>-->
                                 
                                 <div class="form-group">
                                     <label for="inputName" class="col-sm-2 control-label">Session</label>
@@ -201,8 +202,10 @@
                                 <div class="form-group {% if messages %} has-error {% endif %}">
                                     <div class="col-sm-2"></div>
                                     <div class="col-sm-10">
-                                        {% for message in messages %}                                        
-                                            <span class="help-block">{{ message }}</span>
+                                        {% for message in messages %}
+                                            {% if message.id == "session" %}
+                                                <span class="help-block">{{ message.msg }}</span>
+                                            {% endif %}
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -242,6 +245,31 @@
                             </form>
                         </div>
                         <!-- /.tab-pane -->
+                        <div class="tab-pane" id="endrolls">                            
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Session</th>
+                                    <th>Subject</th>
+                                    <th>User</th>
+                                    <!--<th class="text-center" style="width: 200px">Action</th>-->
+                                </tr>
+                                {% for endroll in endrolls %}
+                                    <tr>
+                                        <td>{{ endroll.id }}.</td>
+                                        <td>{{ endroll.session.start_date|date:'d/m/Y' }} - {{ endroll.session.end_date|date:'d/m/Y' }}.</td>
+                                        <td>{{ endroll.session.subject.name }}</td>
+                                        <td>{{ endroll.content }}</td>
+                                        <td>{{ endroll.student.profile.user.username }}</td>
+                                        <!--<td class="text-center">                                        
+                                            <a href="#" data-href="{% url 'admin:delete_endroll' endroll.id %}" data-toggle="modal" data-target="#confirm-delete">
+                                                <span class="badge bg-red">Delete</span>
+                                            </a>
+                                        </td>-->
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
                     </div>
                     <!-- /.tab-content -->
                 </div>

@@ -15,7 +15,7 @@ from django.contrib.auth import login
 
 from ars.categories.models import Category
 from ars.courses.models import Course, TeacherCourse
-from ars.subjects.models import Subject, Session, Task
+from ars.subjects.models import Subject, Session, Task, Endroll
 from ars.reviews.models import Review
 from ars.blog.models import Blog
 
@@ -284,6 +284,8 @@ class SubjectDetailView(TeacherRequiredMixin, DetailView):
         context['sessions'] = Session.objects.filter(subject=self.object)
         context['tasks'] = Task.objects.filter(session__subject=self.object,
                                 session__subject__course__teachers=self.request.user.profile.teacher).order_by('-id')
+        context['endrolls'] = Endroll.objects.filter(session__subject=self.object,
+                                session__subject__course__teachers=self.request.user.profile.teacher).order_by('-id')
         return context
 
 class SubjectDeleteView(TeacherRequiredMixin, DeleteView):
@@ -308,14 +310,14 @@ class SessionCreateView(TeacherRequiredMixin, CreateView):
         start_date = form.cleaned_data['start_date']
         end_date = form.cleaned_data['end_date']
         if end_date < start_date:
-            messages.add_message(self.request, messages.INFO, "End date need > start date")
+            messages.add_message(self.request, messages.INFO, { 'id': 'session', 'msg': 'End date need > start date'})
             return HttpResponseRedirect(self.get_success_url())
         self.object = form.save()
         return super(SessionCreateView, self).form_valid(form)
 
     def form_invalid(self, form):
         self.subject = form.cleaned_data['subject']
-        messages.add_message(self.request, messages.INFO, "All fields is required")
+        messages.add_message(self.request, messages.INFO, { 'id': 'session', 'msg': 'All fields is required'})
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
