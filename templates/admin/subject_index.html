@@ -44,7 +44,10 @@
                                     </td>
                                     <td>{{ item.course }}</td>
                                     <td>{{ item.description }}</td>                                    
-                                    <td class="text-center">                                        
+                                    <td class="text-center"> 
+                                        <a href="{% url 'admin:detail_subject' item.id %}">
+                                            <span class="badge bg-yellow">Detail</span>
+                                        </a>                                       
                                         <a href="{% url 'admin:update_subject' item.id %}">
                                             <span class="badge">Update</span>
                                         </a>

@@ -8,12 +8,14 @@ from django.views.generic import (
     )
 
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
+from django.contrib import messages
 from django.contrib.auth import login
 
 from ars.categories.models import Category
 from ars.courses.models import Course, TeacherCourse
-from ars.subjects.models import Subject, Session
+from ars.subjects.models import Subject, Session, Task
 from ars.reviews.models import Review
 
 from . import forms
@@ -21,6 +23,12 @@ from . import forms
 # Create your views here.
 class AdminRequiredMixin(object):
     """docstring for AdminRequiredMixin"""
+    @method_decorator(permission_required('is_superuser', login_url='/admin/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(AdminRequiredMixin, self).dispatch(request, *args, **kwargs)    
+
+class TeacherRequiredMixin(object):
+    """docstring for TeacherRequiredMixin"""
     @method_decorator(staff_member_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
@@ -44,7 +52,7 @@ class LoginView(FormView):
         login(self.request, admin)
         return super().form_valid(form)
 
-class DashboardView(AdminRequiredMixin, TemplateView):
+class DashboardView(TeacherRequiredMixin, TemplateView):
     template_name = 'admin/dashboard_index.html'
 
     def get_context_data(self, **kwargs):
@@ -122,14 +130,14 @@ class CategoryDeleteView(AdminRequiredMixin, DeleteView):
 
 # Courses Management
 
-class CourseView(AdminRequiredMixin, ListView):
+class CourseView(TeacherRequiredMixin, ListView):
     """docstring for CourseView"""
     model = Course
     context_object_name = 'list_course'
     template_name = 'admin/course_index.html'
 
     def get_queryset(self):
-        return Course.objects.filter(teachers=self.request.user.teacher).order_by('-id')
+        return Course.objects.filter(teachers=self.request.user.profile.teacher).order_by('-id')
 
     def get_context_data(self, **kwargs):
         context = super(CourseView, self).get_context_data(**kwargs)
@@ -140,7 +148,7 @@ class CourseView(AdminRequiredMixin, ListView):
         context['info'] = info
         return context
 
-class CourseCreateView(AdminRequiredMixin, CreateView):
+class CourseCreateView(TeacherRequiredMixin, CreateView):
     """docstring for CourseCreateView"""
     model = Course
     template_name = 'admin/course_create.html'
@@ -157,13 +165,13 @@ class CourseCreateView(AdminRequiredMixin, CreateView):
 
     def form_valid(self, form):
         course = form.save()
-        TeacherCourse.objects.create(teacher=self.request.user.teacher, course=course, is_creator=True)
+        TeacherCourse.objects.create(teacher=self.request.user.profile.teacher, course=course, is_creator=True)
         return super(CourseCreateView, self).form_valid(form)
 
     def get_success_url(self):
         return reverse('admin:list_course')
 
-class CourseUpdateView(AdminRequiredMixin, UpdateView):
+class CourseUpdateView(TeacherRequiredMixin, UpdateView):
     """docstring for CourseUpdateView"""
     model = Course 
     template_name = 'admin/course_update.html'
@@ -181,7 +189,7 @@ class CourseUpdateView(AdminRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('admin:list_course')
 
-class CourseDeleteView(AdminRequiredMixin, DeleteView):
+class CourseDeleteView(TeacherRequiredMixin, DeleteView):
     """docstring for CourseDeleteView"""
     model = Course
 
@@ -194,14 +202,14 @@ class CourseDeleteView(AdminRequiredMixin, DeleteView):
 
 # Subjects Management
 
-class SubjectView(AdminRequiredMixin, ListView):
+class SubjectView(TeacherRequiredMixin, ListView):
     """docstring for SubjectView"""
     model = Subject
     context_object_name = 'list_subject'
     template_name = 'admin/subject_index.html'
 
     def get_queryset(self):
-        return Subject.objects.filter(course__teachers=self.request.user.teacher).order_by('-id')
+        return Subject.objects.filter(course__teachers=self.request.user.profile.teacher).order_by('-id')
 
     def get_context_data(self, **kwargs):
         context = super(SubjectView, self).get_context_data(**kwargs)
@@ -212,7 +220,7 @@ class SubjectView(AdminRequiredMixin, ListView):
         context['info'] = info
         return context
 
-class SubjectCreateView(AdminRequiredMixin, CreateView):
+class SubjectCreateView(TeacherRequiredMixin, CreateView):
     """docstring for SubjectCreateView"""
     model = Subject
     template_name = 'admin/subject_create.html'
@@ -230,7 +238,7 @@ class SubjectCreateView(AdminRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('admin:list_subject')
 
-class SubjectUpdateView(AdminRequiredMixin, UpdateView):
+class SubjectUpdateView(TeacherRequiredMixin, UpdateView):
     """docstring for SubjectUpdateView"""
     model = Subject 
     template_name = 'admin/subject_update.html'
@@ -248,7 +256,7 @@ class SubjectUpdateView(AdminRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('admin:list_subject')
 
-class SubjectDetailView(AdminRequiredMixin, DetailView):
+class SubjectDetailView(TeacherRequiredMixin, DetailView):
     """docstring for SubjectDetailView"""
     model = Subject 
     template_name = 'admin/subject_detail.html'
@@ -261,11 +269,13 @@ class SubjectDetailView(AdminRequiredMixin, DetailView):
         }
         context['info'] = info
         context['reviews'] = Review.objects.filter(subject=self.object, 
-                                            subject__course__teachers=self.request.user.teacher).order_by('-id')
+                                subject__course__teachers=self.request.user.profile.teacher).order_by('-id')
         context['sessions'] = Session.objects.filter(subject=self.object)
+        context['tasks'] = Task.objects.filter(session__subject=self.object,
+                                session__subject__course__teachers=self.request.user.profile.teacher).order_by('-id')
         return context
 
-class SubjectDeleteView(AdminRequiredMixin, DeleteView):
+class SubjectDeleteView(TeacherRequiredMixin, DeleteView):
     """docstring for SubjectDeleteView"""
     model = Subject
 
@@ -275,24 +285,70 @@ class SubjectDeleteView(AdminRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse('admin:list_subject')
 
+# Sessions Management
 
-class SessionCreateView(AdminRequiredMixin, CreateView):
+class SessionCreateView(TeacherRequiredMixin, CreateView):
     """docstring for SessionCreateView"""
     model = Session
     fields = ['subject', 'start_date', 'end_date']
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        print('object: ', self.object)
-        return super().post(request, *args, **kwargs)
-
     def form_valid(self, form):
+        self.subject = form.cleaned_data['subject']
+        start_date = form.cleaned_data['start_date']
+        end_date = form.cleaned_data['end_date']
+        if end_date < start_date:
+            messages.add_message(self.request, messages.INFO, "End date need > start date")
+            return HttpResponseRedirect(self.get_success_url())
         self.object = form.save()
         return super(SessionCreateView, self).form_valid(form)
 
     def form_invalid(self, form):
+        self.subject = form.cleaned_data['subject']
+        messages.add_message(self.request, messages.INFO, "All fields is required")
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse_lazy('admin:detail_subject' , kwargs={ 'pk': self.object.subject.pk })
+        return reverse_lazy('admin:detail_subject', kwargs={ 'pk': self.subject.pk })
         
+# Task Management
+
+class TaskCreateView(TeacherRequiredMixin, CreateView):
+    """docstring for TaskCreateView"""
+    model = Task
+    fields = ['session', 'name', 'slug', 'content', 'start_date', 'end_date']
+
+    def get_context_data(self, **kwargs):
+        context = super(TaskCreateView, self).get_context_data(**kwargs)
+        return context
+
+    def form_valid(self, form):
+        self.session = form.cleaned_data['session']
+        start_date = form.cleaned_data['start_date']
+        end_date = form.cleaned_data['end_date']
+        if end_date < start_date:
+            messages.add_message(self.request, messages.INFO, "End date need > start date")
+            return HttpResponseRedirect(self.get_success_url())
+        self.object = form.save()
+        return super(TaskCreateView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        self.session = form.cleaned_data['session']
+        messages.add_message(self.request, messages.INFO, "All fields is required")
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse_lazy('admin:detail_subject', kwargs={ 'pk': self.session.subject.pk })
+
+class TaskDeleteView(TeacherRequiredMixin, DeleteView):
+    """docstring for TaskDeleteView"""
+    model = Task
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super(TaskDeleteView, self).post(request)    
+
+    def get_success_url(self):
+        return reverse_lazy('admin:detail_subject', kwargs={ 'pk': self.object.session.subject.pk })

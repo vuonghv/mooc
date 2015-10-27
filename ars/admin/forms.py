@@ -1,7 +1,5 @@
 from django import forms
 
-from ars.categories.models import Category
-from ars.courses.models import Course
 from ars.subjects.models import Subject
 
 class SubjectForm(forms.ModelForm):
