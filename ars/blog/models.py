@@ -16,7 +16,7 @@ class Blog(Timestampable):
 
     teacher = models.ForeignKey(Teacher)
     title = models.CharField(max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=255)
     description = models.TextField()
     content = models.TextField()
     status = models.SmallIntegerField(choices=STATUS_CHOICES, default=WAITING)

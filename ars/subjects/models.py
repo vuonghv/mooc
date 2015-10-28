@@ -10,7 +10,7 @@ from ars.core.models import Describable, Timestampable
 class Subject(Describable, Timestampable):
     course = models.ForeignKey(Course)
     categories = models.ManyToManyField(Category, db_table="category_subject", related_name='subjects')
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=255)
     image = models.ImageField(upload_to=settings.SUBJECT_DIR, max_length=255, default='', blank=False)
 
     class Meta:
@@ -50,7 +50,7 @@ class Session(models.Model):
     
 class Task(Describable):
     session = models.ForeignKey(Session)
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=255)
     content = models.TextField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()

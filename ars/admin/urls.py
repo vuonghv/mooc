@@ -57,4 +57,16 @@ urlpatterns = [
                                                                     name='update_blog'),
     url(r'^blog/delete/(?P<pk>[0-9]+)/$', views.BlogDeleteView.as_view(), 
                                                                     name='delete_blog'),
+
+    #############################################################
+    #############################################################
+    #############################################################
+    # Url teacher
+    url(r'^teacher/$', views.TeacherView.as_view(), name='list_teacher'),
+    # url(r'^blog/create/$', views.BlogCreateView.as_view(), name='create_blog'),
+    # url(r'^blog/update/(?P<pk>[0-9]+)/$', views.BlogUpdateView.as_view(), 
+    #                                                                 name='update_blog'),
+    url(r'^teacher/delete/(?P<pk>[0-9]+)/$', views.TeacherDeleteView.as_view(), 
+                                                                    name='delete_teacher'),
+
 ]
