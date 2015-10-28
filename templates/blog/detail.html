@@ -29,58 +29,52 @@
         <!-- ==== POST END == -->
 
         <!-- ==== COMMENTS START ==== -->
-        <div class="row">
-            <div class="col-sm-12">
-                <h3>Comments</h3>
-                <ul class="media-list">
-                    <li class="media">
-                        <a class="pull-left media-photo" href="#"><img class="media-object img-responsive" src="{% static 'frontend/images/comment1.jpg' %}" alt="" /></a>
-                        <div class="media-body">
-                            <h5 class="media-heading">John Doe</h5>
-                            <p class="meta">
-                                <span><i class="fa fa-calendar"></i>April 27th, 2014</span>
-                            </p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit id nisi non varius. Aliquam erat volutpat. Pellentesque in dolor vel tortor placerat rutrum. Aenean suscipit lacus nec adipiscing tristique. Mauris semper aliquam purus eu tempor. Etiam gravida, lorem vel imperdiet ullamcorper, est mauris lacinia elit, ut sollicitudin tellus erat et felis. Vestibulum id rhoncus sapien. Mauris scelerisque imperdiet mollis. Nullam eu volutpat urna, quis facilisis metus.</p>                                    
-                        </div>
-                    </li>
-                </ul>
+        {% if comments|length > 0%}
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>Comments</h3>
+                    <ul class="media-list">
+                        {% for comment in comments %}
+                            <li class="media">
+                                <a class="pull-left media-photo" href="#"><img class="media-object img-responsive" src="{% static 'frontend/images/comment1.jpg' %}" alt="" /></a>
+                                <div class="media-body">
+                                    <h5 class="media-heading">{{ comment.profile.user.username }}</h5>
+                                    <p class="meta">
+                                        <span><i class="fa fa-calendar"></i>{{ comment.create_date|date:'d/m/Y' }}</span>
+                                    </p>
+                                    <p>{{ comment.content }}.</p>                                    
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-        </div>
+        {% endif %}
         <!-- ==== COMMENTS END ==== -->
 
         <!-- ==== COMMENT FORM START ==== -->
-        <div class="row">
-            <div class="col-sm-12" data-scroll-reveal>
-                <hr>
-                <h3>Write a Comment</h3>
+        {% if user.is_authenticated %}
+            <div class="row">
+                <div class="col-sm-12" data-scroll-reveal>
+                    <hr>
+                    <h3>Write a Comment</h3>
+                </div>
             </div>
-        </div>
-        <form role="form">
-            <div class="row" data-scroll-reveal>
-                <div class="form-group col-sm-6">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="input-comment-name" placeholder="Name">
-                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+            <form role="form" method="POST" action="{% url 'comment:create' %}">
+                {% csrf_token %}
+                <input type="hidden" name="blog" value="{{ object.pk }}" />
+                <div class="row" data-scroll-reveal>
+                    <div class="form-group col-sm-12">
+                        <textarea name="content" class="form-control" rows="5"></textarea>
                     </div>
                 </div>
-                <div class="form-group col-sm-6">
-                    <div class="input-group">
-                        <input type="email" class="form-control" id="input-comment-email" placeholder="Email">
-                        <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+                <div class="row" data-scroll-reveal>
+                    <div class="form-group col-sm-12">
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
-            </div>
-            <div class="row" data-scroll-reveal>
-                <div class="form-group col-sm-12">
-                    <textarea class="form-control" rows="5"></textarea>
-                </div>
-            </div>
-            <div class="row" data-scroll-reveal>
-                <div class="form-group col-sm-12">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        {% endif %}
         <!-- ==== COMMENTS FORM END ==== -->
     </div>
     <!-- ==== BLOG END == -->

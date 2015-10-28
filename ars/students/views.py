@@ -10,8 +10,9 @@ from django.core.urlresolvers import reverse, reverse_lazy
 
 from ars.students.models import Student
 from ars.core.models import UserProfile
+from ars.core.views import BaseView
 
-class SignupStudentView(CreateView):
+class SignupStudentView(BaseView, CreateView):
     model = djapps.get_model(settings.AUTH_USER_MODEL)
     template_name = 'students/signup.html'
     form_class = UserCreationForm
@@ -46,7 +47,7 @@ class SignupStudentView(CreateView):
         return context
 
 
-class LoginStudentView(FormView):
+class LoginStudentView(BaseView, FormView):
     template_name = 'students/login.html'
     form_class = AuthenticationForm
     success_url = reverse_lazy('home')

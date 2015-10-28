@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView
 
 from ars.blog.models import Blog
 from ars.core.views import BaseView
+from ars.comments.models import Comment
 
 # Create your views here.
 class BlogView(BaseView, ListView):
@@ -37,6 +38,8 @@ class BlogDetailView(BaseView, DetailView):
                 'title': self.object.title,
                 },
             'page_title': 'Blog',
+            'comments': Comment.objects.filter(profile=self.request.user.profile,
+                                                blog=self.object).order_by('-id')
         }
         context.update(info)
         return context

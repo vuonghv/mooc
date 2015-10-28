@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'ars.subjects',
     'ars.reviews',
     'ars.about',
+    'ars.comments',
 ]
 
 MIDDLEWARE_CLASSES = (
