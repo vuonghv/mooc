@@ -13,3 +13,19 @@ class Student(models.Model):
 
     def __str__(self):
         return 'Student {}'.format(self.name)
+
+    @property
+    def username(self):
+        return self.profile.user.username
+
+    @property
+    def first_name(self):
+        return self.profile.user.first_name
+
+    @property
+    def last_name(self):
+        return self.profile.user.last_name
+
+    @property
+    def full_name(self):
+        return self.profile.user.get_full_name()

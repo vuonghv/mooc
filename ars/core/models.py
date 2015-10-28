@@ -26,7 +26,7 @@ class UserProfile(models.Model):
 
     @property
     def is_teacher(self):
-        if self.teacher:
+        if hasattr(self, 'teacher'):
             return True
         return False
 

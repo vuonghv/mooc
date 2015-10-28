@@ -15,10 +15,10 @@ class Review(Timestampable):
             (5, 'Five stars'),
     )
 
-    student = models.ForeignKey(Student)
-    subject = models.ForeignKey(Subject)
+    student = models.ForeignKey(Student, related_name='reviews')
+    subject = models.ForeignKey(Subject, related_name='reviews')
     rating = models.IntegerField(choices=RATING_STARS, default=4)
-    content = models.TextField(blank=True, default='')
+    content = models.TextField()
 
     class Meta:
         verbose_name = "Review"

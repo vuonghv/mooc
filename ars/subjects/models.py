@@ -64,7 +64,7 @@ class Task(Describable):
         return 'Task {}'.format(self.name)
 
 class Enroll(Timestampable):
-    session = models.ForeignKey(Session)
+    session = models.ForeignKey(Session, related_name='enrolls')
     student = models.ForeignKey(Student)
 
     class Meta:

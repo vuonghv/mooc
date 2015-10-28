@@ -32,7 +32,7 @@
             </li>
             <li class="course-data">
                 <span class="icon icon-006"></span>
-                <span class="pull-right">149 of 250 Students</span>
+                <span class="pull-right">{{ num_enrollers }} enrolling students</span>
             </li>
             {% with subject.sessions.exists as has_sessions %}
             {% if has_sessions %}
@@ -56,13 +56,17 @@
             </li>
         </ul>
         {% if has_sessions %}
-            <div class="hidden">
-                <form method="POST" action="{% url 'subjects:enroll' %}" id="enroll-session">
-                    {% csrf_token %}
-                    <input type="hidden" name="session" value="{{ subject.latest_session.pk }}">
-                </form>
-            </div>
-            <p><a href="#" onclick="document.getElementById('enroll-session').submit();" class="btn btn-primary take-course">Take This Course</a></p>
+            {% if not has_enrolled %}
+                <div class="hidden">
+                    <form method="POST" action="{% url 'subjects:enroll' %}" id="enroll-session">
+                        {% csrf_token %}
+                        <input type="hidden" name="session" value="{{ subject.latest_session.pk }}">
+                    </form>
+                </div>
+                <p><a href="#" onclick="document.getElementById('enroll-session').submit();" class="btn btn-primary take-course">Take This Course</a></p>
+            {% else %}
+                <p><a href="#" class="btn btn-info take-course">You enrolled this subject</a></p>
+            {% endif %}
         {% endif %}
         {% endwith %}
         <p class="text-center share">		
@@ -96,13 +100,12 @@ lectus pulvinar.<br>
     <!-- ==== TEACHER END == -->
 
 </div>
+<!-- ==== SIDEBAR END == -->
 {% endblock sidebar %}
 
-            <!-- ==== SIDEBAR END == -->
 
 {% block content %}
 <!-- ==== COURSES START == -->
-
 <div class="col-sm-8">
     <h1>{{ subject.name }}</h1>
     <p>{{ subject.description }}</p>
@@ -151,6 +154,7 @@ Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo
 nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
 purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
 lorem non commodo.</p>
+    {% comment %}
     <hr>
     <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(24px);transform: translatey(24px);opacity: 0;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="row" data-scroll-reveal="">
         <div class="col-sm-6">
@@ -160,11 +164,214 @@ lorem non commodo.</p>
             <a class="btn btn-primary lesson-next">Next Course Title &nbsp; <i class="fa fa-caret-right"></i></a>
         </div>
     </div>
+    {% endcomment %}
+
+    <!-- ==== COMMENTS START ==== -->
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Reviews</h3>
+            {% if subject.reviews %}
+            <ul class="media-list">
+
+                {% for review in subject.reviews.all %}
+                <li class="media">
+                    <a class="pull-left media-photo" href="#"><img class="media-object img-responsive" src="{% static 'frontend/images/comment1.jpg' %}" alt="" /></a>
+                    <div class="media-body">
+                        <h5 class="media-heading">{{ review.student.username }}<a href="#" class="pull-right"><i class="fa fa-reply"></i>Reply</a></h5>
+                        <p class="meta">
+                            <span><i class="fa fa-calendar"></i>{{ review.modified_date|date:'D d M Y' }}</span>
+                            <span><i class="fa fa-linux"></i>Rating: {{ review.rating }}/5</span>
+                        </p>
+                        <p>{{ review.content }}</p>
+                        
+                        {% comment %}
+                        <div class="media" data-scroll-reveal>
+                            <a class="pull-left media-photo" href="#"><img class="media-object img-responsive" src="{% static 'frontend/images/comment2.jpg' %}" alt="" /></a>
+                            <div class="media-body">
+                                <h5 class="media-heading">Jane Doe<a href="#" class="pull-right"><i class="fa fa-reply"></i>Reply</a></h5>
+                                <p class="meta">
+                                    <span><i class="fa fa-calendar"></i>April 27th, 2014</span>
+                                </p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit id nisi non varius. Aliquam erat volutpat. Pellentesque in dolor vel tortor placerat rutrum. Aenean suscipit lacus nec adipiscing tristique. Mauris semper aliquam purus eu tempor. Etiam gravida, lorem vel imperdiet ullamcorper, est mauris lacinia elit, ut sollicitudin tellus erat et felis. Vestibulum id rhoncus sapien. Mauris scelerisque imperdiet mollis. Nullam eu volutpat urna, quis facilisis metus.</p>
+
+                                <div class="media" data-scroll-reveal>
+                                    <a class="pull-left media-photo" href="#"><img class="media-object img-responsive" src="{% static 'frontend/images/comment3.jpg' %}" alt="" /></a>
+                                    <div class="media-body">
+                                        <h5 class="media-heading">John Doe<a href="#" class="pull-right"><i class="fa fa-reply"></i>Reply</a></h5>
+                                        <p class="meta">
+                                            <span><i class="fa fa-calendar"></i>April 27th, 2014</span>
+                                        </p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit id nisi non varius. Aliquam erat volutpat. Pellentesque in dolor vel tortor placerat rutrum. Aenean suscipit lacus nec adipiscing tristique. Mauris semper aliquam purus eu tempor. Etiam gravida, lorem vel imperdiet ullamcorper, est mauris lacinia elit, ut sollicitudin tellus erat et felis. Vestibulum id rhoncus sapien. Mauris scelerisque imperdiet mollis. Nullam eu volutpat urna, quis facilisis metus.</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        {% endcomment %}
+
+                    </div>
+                </li>
+                {% endfor %}
+
+                {% comment %}
+                <li class="media" data-scroll-reveal>
+                    <a class="pull-left media-photo" href="#"><img class="media-object img-responsive" src="{% static 'frontend/images/comment4.jpg' %}" alt="" /></a>
+                    <div class="media-body">
+                        <h5 class="media-heading">Jane Doe<a href="#" class="pull-right"><i class="fa fa-reply"></i>Reply</a></h5>
+                        <p class="meta">
+                            <span><i class="fa fa-calendar"></i>April 27th, 2014</span>
+                        </p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit id nisi non varius. Aliquam erat volutpat. Pellentesque in dolor vel tortor placerat rutrum. Aenean suscipit lacus nec adipiscing tristique. Mauris semper aliquam purus eu tempor. Etiam gravida, lorem vel imperdiet ullamcorper, est mauris lacinia elit, ut sollicitudin tellus erat et felis. Vestibulum id rhoncus sapien. Mauris scelerisque imperdiet mollis. Nullam eu volutpat urna, quis facilisis metus.</p>
+
+                        <div class="media" data-scroll-reveal>
+                            <a class="pull-left media-photo" href="#"><img class="media-object img-responsive" src="{% static 'frontend/images/comment5.jpg' %}" alt="" /></a>
+                            <div class="media-body">
+                                <h5 class="media-heading">John Doe<a href="#" class="pull-right"><i class="fa fa-reply"></i>Reply</a></h5>
+                                <p class="meta">
+                                    <span><i class="fa fa-calendar"></i>April 27th, 2014</span>
+                                </p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit id nisi non varius. Aliquam erat volutpat. Pellentesque in dolor vel tortor placerat rutrum. Aenean suscipit lacus nec adipiscing tristique. Mauris semper aliquam purus eu tempor. Etiam gravida, lorem vel imperdiet ullamcorper, est mauris lacinia elit, ut sollicitudin tellus erat et felis. Vestibulum id rhoncus sapien. Mauris scelerisque imperdiet mollis. Nullam eu volutpat urna, quis facilisis metus.</p>
+
+                                <div class="media" data-scroll-reveal>
+                                    <a class="pull-left media-photo" href="#"><img class="media-object img-responsive" src="{% static 'frontend/images/comment6.jpg' %}" alt="" /></a>
+                                    <div class="media-body">
+                                        <h5 class="media-heading">John Doe<a href="#" class="pull-right"><i class="fa fa-reply"></i>Reply</a></h5>
+                                        <p class="meta">
+                                            <span><i class="fa fa-calendar"></i>April 27th, 2014</span>
+                                        </p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit id nisi non varius. Aliquam erat volutpat. Pellentesque in dolor vel tortor placerat rutrum. Aenean suscipit lacus nec adipiscing tristique. Mauris semper aliquam purus eu tempor. Etiam gravida, lorem vel imperdiet ullamcorper, est mauris lacinia elit, ut sollicitudin tellus erat et felis. Vestibulum id rhoncus sapien. Mauris scelerisque imperdiet mollis. Nullam eu volutpat urna, quis facilisis metus.</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
+                {% endcomment %}
+            </ul>
+            {% endif %} {# if subject.reviews #}
+        </div>
+    </div>
+    <!-- ==== COMMENTS END ==== -->
+
+    <!-- ==== COMMENT FORM START ==== -->
+    {% if not has_reviewed %}
+    <div class="row">
+        <div class="col-sm-12" data-scroll-reveal>
+            <hr>
+            <h3>Write a Review</h3>
+        </div>
+    </div>
+    {% if form %}
+        <form method="POST" action="{% url 'subjects:detail' subject.pk %}" role="form">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <div class="row" data-scroll-reveal>
+                <div class="form-group col-sm-12 has-error">
+                    {{ form.non_field_errors }}
+                </div>
+            </div>
+            {% endif %}
+            <div class="row" data-scroll-reveal>
+                <div class="form-group col-sm-12 {{ form.rating.errors|yesno:'has-error,' }}">
+                    <span><strong>Rating: </strong></span>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="1" {% if form.rating.value == '1' %}checked="checked"{% endif %}> 1
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="2" {% if form.rating.value == '2' %}checked="checked"{% endif %}> 2
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="3" {% if form.rating.value == '3' %}checked="checked"{% endif %}> 3
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="4" {% if form.rating.value == '4' %}checked="checked"{% endif %}> 4
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="5" {% if form.rating.value == '5' %}checked="checked"{% endif %}> 5
+                    </label>
+                </div>
+                {% if form.rating.errors %}
+                    <div class="form-group col-sm-12 text-danger">
+                        {{ form.rating.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="row" data-scroll-reveal>
+                <div class="form-group col-sm-12 {{ form.content.errors|yesno:'has-error,' }}">
+                    <textarea class="form-control" rows="5" name="{{ form.content.html_name }}">{{ form.content.value }}</textarea>
+                </div>
+                {% if form.content.errors %}
+                    <div class="form-group col-sm-12 text-danger">
+                        {{ form.content.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="row" data-scroll-reveal>
+                <div class="form-group col-sm-12">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    {% else %}
+        <form method="POST" action="{% url 'subjects:detail' subject.pk %}" role="form">
+            {% csrf_token %}
+            {% comment %}
+            <div class="row" data-scroll-reveal>
+                <div class="form-group col-sm-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="input-comment-name" placeholder="Name">
+                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="input-group">
+                        <input type="email" class="form-control" id="input-comment-email" placeholder="Email">
+                        <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+                    </div>
+                </div>
+            </div>
+            {% endcomment %}
+            <div class="row" data-scroll-reveal>
+                <div class="form-group col-sm-12">
+                    <span><strong>Rating: </strong></span>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="1"> 1
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="2"> 2
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="3"> 3
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="4" checked="checked"> 4
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="5"> 5
+                    </label>
+                </div>
+            </div>
+            <div class="row" data-scroll-reveal>
+                <div class="form-group col-sm-12">
+                    <textarea class="form-control" rows="5" name="content"></textarea>
+                </div>
+            </div>
+            <div class="row" data-scroll-reveal>
+                <div class="form-group col-sm-12">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    {% endif %}
+    {% endif %} {# has_reviewed #}
+    <!-- ==== COMMENTS FORM END ==== -->
 </div>
 
+<!-- ========== CONTENT END ========== -->
 {% endblock content %}
 
-<!-- ========== CONTENT END ========== -->
 
 <!-- ========== RELATED COURSES START ========== -->
 {% block related_subjects %}
@@ -178,14 +385,6 @@ lorem non commodo.</p>
 
         <!-- OWL CAROUSEL START -->
         <div class="owl-carousel owl-theme owl-loaded">
-            
-            
-            
-            
-            
-            
-            
-            
 
         <div class="owl-stage-outer"><div style="transform: translate3d(-1950px, 0px, 0px); transition: all 1.5s ease 0s; width: 3900px;" class="owl-stage"><div style="width: 360px; margin-right: 30px;" class="owl-item cloned"><div class="item">
                         <a href="#"><img src="{% static 'frontend/images/course02.jpg' %}" alt="" class="img-responsive"></a>
