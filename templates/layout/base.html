@@ -110,7 +110,7 @@
                             <h3>Categories</h3>
                             <ul>
                                 {% for category in list_category %}
-                                    <li><a href="#"><i class="fa fa-arrow-right"></i><span>{{ category }}</span></a></li>
+                                    <li><a href="{% url 'category:index' category.pk %}"><i class="fa fa-arrow-right"></i><span>{{ category }}</span></a></li>
                                 {% endfor %}
                             </ul>
                         </div>
@@ -192,21 +192,13 @@
                 <div class="col-sm-3">
                     <h3>Latest Courses</h3>
                     <ul>
-                        <li>
-                            <img src="{% static 'frontend/images/thumb-course1.jpg' %}" alt="" class="pull-left" />
-                            <h5><a href="courses-details-right-sidebar.html">Web Design Basics</a></h5>
-                            <p class="author"><a href="teachers-profile.html">by John Doe</a></p>
-                        </li>
-                        <li>
-                            <img src="{% static 'frontend/images/thumb-course2.jpg' %}" alt="" class="pull-left" />
-                            <h5><a href="courses-details-right-sidebar.html">Web Development Basics</a></h5>
-                            <p class="author"><a href="teachers-profile.html">by John Doe</a></p>
-                        </li>
-                        <li>
-                            <img src="{% static 'frontend/images/thumb-course3.jpg' %}" alt="" class="pull-left" />
-                            <h5><a href="courses-details-right-sidebar.html">Photography Advanced Technics</a></h5>
-                            <p class="author"><a href="teachers-profile.html">by John Doe</a></p>
-                        </li>
+                        {% for subject in list_lastest_subject %}
+                            <li>
+                                <img width="50px" height="50px" src="{{ subject.get_image_url }}" alt="" class="pull-left" />
+                                <h5><a href="{% url 'subjects:detail' subject.pk %}">{{ subject.name }}</a></h5>
+                                <p class="author"><a href="#">by {{ subject.course.creator.profile.user.username }}</a></p>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <!-- ==== LATEST COURSES END == -->
@@ -214,21 +206,13 @@
                 <div class="col-sm-3">
                     <h3>Popular Courses</h3>
                     <ul>
-                        <li>
-                            <img src="{% static 'frontend/images/thumb-course4.jpg' %}" alt="" class="pull-left" />
-                            <h5><a href="courses-details-right-sidebar.html">Web Design Basics</a></h5>
-                            <p class="author"><a href="teachers-profile.html">by John Doe</a></p>
-                        </li>
-                        <li>
-                            <img src="{% static 'frontend/images/thumb-course5.jpg' %}" alt="" class="pull-left" />
-                            <h5><a href="courses-details-right-sidebar.html">Web Development Basics</a></h5>
-                            <p class="author"><a href="teachers-profile.html">by John Doe</a></p>
-                        </li>
-                        <li>
-                            <img src="{% static 'frontend/images/thumb-course6.jpg' %}" alt="" class="pull-left" />
-                            <h5><a href="courses-details-right-sidebar.html">Photography Advanced Technics</a></h5>
-                            <p class="author"><a href="teachers-profile.html">by John Doe</a></p>
-                        </li>
+                        {% for subject in list_popular_subject %}
+                            <li>
+                                <img width="50px" height="50px" src="{{ subject.get_image_url }}" alt="" class="pull-left" />
+                                <h5><a href="{% url 'subjects:detail' subject.pk %}">{{ subject.name }}</a></h5>
+                                <p class="author"><a href="#">by {{ subject.course.creator.profile.user.username }}</a></p>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <!-- ==== POPULAR COURSES END == -->
