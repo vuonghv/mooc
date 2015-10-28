@@ -5,9 +5,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from ars.subjects.models import Subject
 from ars.core.views import LoginRequiredMixin
 from ars.subjects.models import Enroll
+from ars.core.views import BaseView
 
-
-class ListSubjectView(ListView):
+class ListSubjectView(BaseView, ListView):
     model = Subject
     template_name = 'subjects/index.html'
     paginate_by = 6
@@ -23,7 +23,7 @@ class ListSubjectView(ListView):
         context.update(info)
         return context
 
-class DetailSubjectView(DetailView):
+class DetailSubjectView(BaseView, DetailView):
     model = Subject
     template_name = 'subjects/detail.html'
 
@@ -37,7 +37,6 @@ class DetailSubjectView(DetailView):
         }
         context.update(info)
         return context
-
 
 class EnrollSubjectView(LoginRequiredMixin, CreateView):
     model = Enroll

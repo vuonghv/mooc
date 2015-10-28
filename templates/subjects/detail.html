@@ -1,174 +1,69 @@
 {% extends 'layout/base.html' %}
 {% load staticfiles %}
 
-<!-- ========== CONTENT START ========== -->
-
 {% block content %}
-    <div class="container">
-        <div class="row">
+    <!-- ==== COURSES START == -->
 
-            <!-- ==== SIDEBAR START == -->
-
-            <div class="col-sm-4">
-
-                <!-- ==== COURSE DATA START == -->
-                <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s, opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="widget" data-scroll-reveal="">
-                    <ul>
-                        <li class="price">
-                            Price <span class="pull-right">Free</span>
-                        </li>
-                        <li class="course-data">
-                            <span class="icon icon-068"></span>
-                            <span class="pull-right">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </span>
-                        </li>
-                        <li class="course-data">
-                            <span class="icon icon-038"></span>
-                            <span class="pull-right">4 lessons</span>
-                        </li>
-                        <li class="course-data">
-                            <span class="icon icon-036"></span>
-                            <span class="pull-right">Course Certificate</span>
-                        </li>
-                        <li class="course-data">
-                            <span class="icon icon-006"></span>
-                            <span class="pull-right">149 of 250 Students</span>
-                        </li>
-                        {% with subject.sessions.exists as has_sessions %}
-                        {% if has_sessions %}
-                            <li class="course-data">
-                                <span class="icon icon-038"></span>
-                                <span class="pull-right">{{ subject.latest_session.start_date|date:"D d M Y" }}</span>
-                            </li>
-                            <li class="course-data">
-                                <span class="icon icon-038"></span>
-                                <span class="pull-right">{{ subject.latest_session.end_date|date:"D d M Y" }}</span>
-                            </li>
-                        {% endif %}
-                        <li class="course-data">
-                            <span>
-                                <ul class="list-inline">
-                                {% for category in subject.categories.all %}
-                                    <li><a href="#">{{ category }}</a></li>
-                                {% endfor %}
-                                </ul>
-                            </span>
-                        </li>
-                    </ul>
-                    {% if has_sessions %}
-                        <div class="hidden">
-                            <form method="POST" action="{% url 'subjects:enroll' %}" id="enroll-session">
-                                {% csrf_token %}
-                                <input type="hidden" name="session" value="{{ subject.latest_session.pk }}">
-                            </form>
-                        </div>
-                        <p><a href="#" onclick="document.getElementById('enroll-session').submit();" class="btn btn-primary take-course">Take This Course</a></p>
-                    {% endif %}
-                    {% endwith %}
-                    <p class="text-center share">		
-                        <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                        <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                        <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
-                    </p>
-                </div>
-                <!-- ==== COURSE DATA END == -->
-
-                <!-- ==== TEACHER START == -->
-                {% for teacher in subject.course.teachers.all %}
-                <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s, opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="widget" data-scroll-reveal="">
-                    <h3>Teacher</h3>
-                    <div class="teacher row">
-                        <div class="col-sm-12">
-                            <img src="{% static 'frontend/images/thumb-teacher.jpg' %}" alt="" class="pull-left">
-                            <h5>{{ teacher.profile.user.username }}</h5>
-                            <p>Web Design</p>
-                        </div>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+    <div class="col-sm-8">
+        <h1>{{ subject.name }}</h1>
+        <p>{{ subject.description }}</p>
+        <hr>
+        <h3>Lessons</h3>
+        <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
+        <div class="meta">
+            <span><i class="fa fa-clock-o"></i>12 Minutes</span>
+            <span><i class="fa fa-dashboard"></i>Easy</span>
+        </div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
 nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
 purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
-lorem non commodo. Vivamus mattis massa in ipsum molestie, eu aliquet 
-lectus pulvinar.<br>
-                    <a href="http://coffeecreamthemes.com/themes/smartway/site/teachers-profile.html">Read More <i class="fa fa-angle-right"></i></a></p>
-                </div>
-                {% endfor %}
-                <!-- ==== TEACHER END == -->
-
+lorem non commodo.</p>
+        <hr>
+        <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
+        <div class="meta">
+            <span><i class="fa fa-clock-o"></i>12 Minutes</span>
+            <span><i class="fa fa-dashboard"></i>Easy</span>
+        </div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
+nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
+purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
+lorem non commodo.</p>
+        <hr>
+        <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
+        <div class="meta">
+            <span><i class="fa fa-clock-o"></i>12 Minutes</span>
+            <span><i class="fa fa-dashboard"></i>Easy</span>
+        </div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
+nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
+purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
+lorem non commodo.</p>
+        <hr>
+        <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
+        <div class="meta">
+            <span><i class="fa fa-clock-o"></i>12 Minutes</span>
+            <span><i class="fa fa-dashboard"></i>Easy</span>
+        </div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
+nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
+purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
+lorem non commodo.</p>
+        <hr>
+        <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(24px);transform: translatey(24px);opacity: 0;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="row" data-scroll-reveal="">
+            <div class="col-sm-6">
+                <a class="btn btn-primary lesson-prev"><i class="fa fa-caret-left"></i> &nbsp; Previous Course Title</a>
             </div>
-
-            <!-- ==== SIDEBAR END == -->
-
-            <!-- ==== COURSES START == -->
-
-            <div class="col-sm-8">
-                <h1>{{ subject.name }}</h1>
-                <p>{{ subject.description }}</p>
-                <hr>
-                <h3>Lessons</h3>
-                <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
-                <div class="meta">
-                    <span><i class="fa fa-clock-o"></i>12 Minutes</span>
-                    <span><i class="fa fa-dashboard"></i>Easy</span>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
-nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
-purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
-lorem non commodo.</p>
-                <hr>
-                <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
-                <div class="meta">
-                    <span><i class="fa fa-clock-o"></i>12 Minutes</span>
-                    <span><i class="fa fa-dashboard"></i>Easy</span>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
-nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
-purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
-lorem non commodo.</p>
-                <hr>
-                <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
-                <div class="meta">
-                    <span><i class="fa fa-clock-o"></i>12 Minutes</span>
-                    <span><i class="fa fa-dashboard"></i>Easy</span>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
-nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
-purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
-lorem non commodo.</p>
-                <hr>
-                <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
-                <div class="meta">
-                    <span><i class="fa fa-clock-o"></i>12 Minutes</span>
-                    <span><i class="fa fa-dashboard"></i>Easy</span>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo 
-nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
-purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
-lorem non commodo.</p>
-                <hr>
-                <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(24px);transform: translatey(24px);opacity: 0;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="row" data-scroll-reveal="">
-                    <div class="col-sm-6">
-                        <a class="btn btn-primary lesson-prev"><i class="fa fa-caret-left"></i> &nbsp; Previous Course Title</a>
-                    </div>
-                    <div class="col-sm-6 text-right">
-                        <a class="btn btn-primary lesson-next">Next Course Title &nbsp; <i class="fa fa-caret-right"></i></a>
-                    </div>
-                </div>
+            <div class="col-sm-6 text-right">
+                <a class="btn btn-primary lesson-next">Next Course Title &nbsp; <i class="fa fa-caret-right"></i></a>
             </div>
-
-            <!-- ==== COURSES END == -->
-
         </div>
     </div>
+
+    <!-- ==== COURSES END == -->
 {% endblock content %}
 
 <!-- ========== CONTENT END ========== -->

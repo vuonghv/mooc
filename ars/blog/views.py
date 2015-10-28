@@ -1,10 +1,10 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import ListView, DetailView
 
 from ars.blog.models import Blog
+from ars.core.views import BaseView
 
 # Create your views here.
-class BlogView(ListView):
+class BlogView(BaseView, ListView):
     """docstring for BlogView"""
     model = Blog
     context_object_name = "list_blog"
@@ -25,7 +25,7 @@ class BlogView(ListView):
         context.update(info)
         return context
 
-class BlogDetailView(DetailView):
+class BlogDetailView(BaseView, DetailView):
     """docstring for BlogDetailView"""
     model = Blog
     template_name = 'blog/detail.html'

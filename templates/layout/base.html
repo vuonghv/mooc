@@ -10,9 +10,11 @@
     <title>{{ info.title }}</title>
     <link rel="shortcut icon" href="{% static 'frontend/images/favicon.png' %}">
     <!-- Main Stylesheet -->
+    <link href="{% static 'frontend/css/style.css' %}" rel="stylesheet">
+    
     {% block cssfiles %}
-        <link href="{% static 'frontend/css/style.css' %}" rel="stylesheet">
     {% endblock cssfiles %}
+    
     <!-- HTML5 shiv and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
         <script src="js/html5shiv.js"></script>
@@ -60,7 +62,7 @@
                 <nav class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{% url 'home' %}">Home</a></li>
-                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Courses<b class="caret"></b></a>
+                        <!--<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Courses<b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="courses-list-left-sidebar.html">Courses List - Left Sidebar</a></li>
                                 <li><a href="courses-list-right-sidebar.html">Courses List - Right Sidebar</a></li>
@@ -72,7 +74,7 @@
                                 <li><a href="upcoming-exams-left-sidebar.html">Upcoming Exams - Left Sidebar</a></li>
                                 <li><a href="upcoming-exams-right-sidebar.html">Upcoming Exams - Right Sidebar</a></li>
                             </ul>
-                        </li>
+                        </li>-->
                         <li><a href="{% url 'about:index' %}">About</a></li>                        
                         <li><a href="{% url 'blog:index' %}">Blog</a></li>                        
                         <li><a href="{% url 'contact:index' %}">Contact</a></li>
@@ -96,8 +98,70 @@
     <!-- ========== CONTENT START ========== -->
     
     <section id="content">
-        {% block content %}
-        {% endblock %}
+        <div class="container">
+            <div class="row">
+                {% block sidebar %}
+                    <!-- ==== SIDEBAR START == -->
+
+                    <div class="col-sm-4">
+
+                        <!-- ==== CATEGORIES START == -->
+                        <div class="widget" data-scroll-reveal>
+                            <h3>Categories</h3>
+                            <ul>
+                                {% for category in list_category %}
+                                    <li><a href="#"><i class="fa fa-arrow-right"></i><span>{{ category }}</span></a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- ==== CATEGORIES END == -->
+
+                        <!-- ==== NEWSLETTER START == -->
+                        <div class="widget" data-scroll-reveal>
+                            <h3>Newsletter</h3>
+                            <form role="form" name="newsletter-form" id="newsletter-form" action="process-newsletter.php">
+                                <div class="form-group" id="newsletter-name-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="newsletter-input-name" placeholder="Name">
+                                        <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="newsletter-email-group">
+                                    <div class="input-group">
+                                        <input type="email" class="form-control" id="newsletter-input-email" placeholder="Email">
+                                        <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                        <!-- ==== NEWSLETTER END == -->
+
+                        <!-- ==== LATEST POSTS START == -->
+                        <div class="widget" data-scroll-reveal>
+                            <h3>Latest posts</h3>
+                            {% for blog in list_lastest_post %}
+                                <div class="post row">
+                                    <div class="col-md-4">
+                                        <a href="#"><img src="{{ blog.get_image_url }}" alt="" class="img-responsive" /></a>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h5><a href="{% url 'blog:detail' blog.pk blog.slug %}">{{ blog }}</a></h5>
+                                        <div class="meta">by {{ blog.teacher.profile.user.username }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- ==== LATEST POSTS END == -->
+                    </div>
+
+                    <!-- ==== SIDEBAR END == -->
+                {% endblock %}
+
+                {% block content %}                    
+                {% endblock %}
+            </div>
+        </div>
     </section>
     
     <!-- ========== CONTENT END ========== -->
@@ -201,7 +265,7 @@
                         <div class="col-sm-7">
                             <p>Morbi nec quam sed elit pharetra faucibus. Cras vel massa viverra ligula suscipit interdum eget nec est. Cras nibh mi, faucibus at ligula eu, eleifend tincidunt justo. Nunc porttitor massa at nisi condimentum fringilla. Nullam finibus, nibh eu hendrerit suscipit, tellus mi commodo lectus, sit amet dictum sem lorem sed neque.
                                 <br>
-                                <a href="#">Read More <i class="fa fa-angle-right"></i></a></p>
+                                <a href="{% url 'about:index' %}">Read More <i class="fa fa-angle-right"></i></a></p>
                         </div>
                     </div>
                 </div>
@@ -241,7 +305,7 @@
                     <p>Phone: <a href="tel:1800123456">1800-123-456</a>
                         <br> Fax: <a href="tel:1800123456">1800-123-456</a>
                         <br> Email: <a href="mailto:info@smartway.com">info@smartway.com</a></p>
-                    <p><a href="contact.html">Get Directions <i class="fa fa-angle-right"></i></a></p>
+                    <p><a href="{% url 'contact:index' %}">Get Directions <i class="fa fa-angle-right"></i></a></p>
                 </div>
                 <!-- ==== CONTACT END == -->
             </div>
@@ -254,12 +318,12 @@
             <div class="row">
                 <!-- ==== CREDITS START == -->
                 <div class="col-sm-8">
-                    &copy; 2014 Smartway Theme by Coffeecream Themes
+                    &copy; 2015 Framgia VN
                 </div>
                 <!-- ==== CREDITS END == -->
                 <!-- ==== SOCIAL ICONS START == -->
                 <div class="col-sm-4 text-right">
-                    <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+                    <a target="_blank" href="https://www.facebook.com/FramgiaVietnam/?fref=ts"><i class="fa fa-facebook fa-lg"></i></a>
                     <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
                     <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
                     <a href="#"><i class="fa fa-youtube fa-lg"></i></a>
@@ -269,37 +333,39 @@
         </div>
     </footer>
     <!-- ========== FOOTER END ========== -->
-    {% block jsfiles %}
-        <!-- Modernizr Plugin -->
-        <script src="{% static 'frontend/js/modernizr.custom.97074.js' %}"></script>
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="{% static 'frontend/js/jquery-1.11.1.min.js' %}"></script>
-        <!-- Bootstrap Plugins -->
-        <script src="{% static 'frontend/js/bootstrap.min.js' %}"></script>
-        <!-- Retina Plugin -->
-        <script src="{% static 'frontend/js/retina-1.1.0.min.js' %}"></script>
-        <!-- Superslides Plugin -->
-        <script src="{% static 'frontend/js/jquery.easing.1.3.js' %}"></script>
-        <script src="{% static 'frontend/js/jquery.animate-enhanced.min.js' %}"></script>
-        <script src="{% static 'frontend/js/jquery.superslides.js' %}"></script>
-        <!-- Owl Carousel Plugin -->
-        <script src="{% static 'frontend/js/owl.carousel.min.js' %}"></script>
-        <!-- Parallax ImageScroll Plugin -->
-        <script src="{% static 'frontend/js/jquery.parallax-1.1.3.js' %}"></script>
-        <!-- Fancybox Plugin -->
-        <script src="{% static 'frontend/js/jquery.fancybox.js' %}"></script>
-        <!-- ImagesLoaded Plugin -->
-        <script src="{% static 'frontend/js/imagesloaded.pkgd.min.js' %}"></script>
-        <!-- Masonry Plugin -->
-        <script src="{% static 'frontend/js/masonry.pkgd.min.js' %}"></script>
-        <!-- Progressbar Plugin -->
-        <script src="{% static 'frontend/js/bootstrap-progressbar.js' %}"></script>
-        <!-- Scroll Reveal Plugin -->
-        <script src="{% static 'frontend/js/scrollReveal.js' %}"></script>
-        <!-- Magic Form Processing -->
-        <script src="{% static 'frontend/js/magic.js' %}"></script>
-        <!-- jQuery Settings -->
-        <script src="{% static 'frontend/js/settings.js' %}"></script>
+
+    <!-- Modernizr Plugin -->
+    <script src="{% static 'frontend/js/modernizr.custom.97074.js' %}"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'frontend/js/jquery-1.11.1.min.js' %}"></script>
+    <!-- Bootstrap Plugins -->
+    <script src="{% static 'frontend/js/bootstrap.min.js' %}"></script>
+    <!-- Retina Plugin -->
+    <script src="{% static 'frontend/js/retina-1.1.0.min.js' %}"></script>
+    <!-- Superslides Plugin -->
+    <script src="{% static 'frontend/js/jquery.easing.1.3.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.animate-enhanced.min.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.superslides.js' %}"></script>
+    <!-- Owl Carousel Plugin -->
+    <script src="{% static 'frontend/js/owl.carousel.min.js' %}"></script>
+    <!-- Parallax ImageScroll Plugin -->
+    <script src="{% static 'frontend/js/jquery.parallax-1.1.3.js' %}"></script>
+    <!-- Fancybox Plugin -->
+    <script src="{% static 'frontend/js/jquery.fancybox.js' %}"></script>
+    <!-- ImagesLoaded Plugin -->
+    <script src="{% static 'frontend/js/imagesloaded.pkgd.min.js' %}"></script>
+    <!-- Masonry Plugin -->
+    <script src="{% static 'frontend/js/masonry.pkgd.min.js' %}"></script>
+    <!-- Progressbar Plugin -->
+    <script src="{% static 'frontend/js/bootstrap-progressbar.js' %}"></script>
+    <!-- Scroll Reveal Plugin -->
+    <script src="{% static 'frontend/js/scrollReveal.js' %}"></script>
+    <!-- Magic Form Processing -->
+    <script src="{% static 'frontend/js/magic.js' %}"></script>
+    <!-- jQuery Settings -->
+    <script src="{% static 'frontend/js/settings.js' %}"></script>
+
+    {% block jsfiles %}        
     {% endblock jsfiles %}
 </body>
 

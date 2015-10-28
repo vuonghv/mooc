@@ -11,7 +11,6 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from ars.students.models import Student
 from ars.core.models import UserProfile
 
-
 class SignupStudentView(CreateView):
     model = djapps.get_model(settings.AUTH_USER_MODEL)
     template_name = 'students/signup.html'

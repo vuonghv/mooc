@@ -1,132 +1,50 @@
 {% extends 'layout/base.html' %}
+{% load staticfiles %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-
-            <!-- ==== SIDEBAR START == -->
-
-            <div class="col-sm-4">
-
-                <!-- ==== CATEGORIES START == -->
-                <div class="widget" data-scroll-reveal>
-                    <h3>Categories</h3>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-arrow-right"></i><span>Image</span></a></li>
-                        <li><a href="#"><i class="fa fa-arrow-right"></i><span>Gallery</span></a></li>
-                        <li><a href="#"><i class="fa fa-arrow-right"></i><span>Video</span></a></li>
-                        <li><a href="#"><i class="fa fa-arrow-right"></i><span>Audio</span></a></li>
-                        <li><a href="#"><i class="fa fa-arrow-right"></i><span>News</span></a></li>
-                    </ul>
-                </div>
-                <!-- ==== CATEGORIES END == -->
-
-                <!-- ==== NEWSLETTER START == -->
-                <div class="widget" data-scroll-reveal>
-                    <h3>Newsletter</h3>
-                    <form role="form" name="newsletter-form" id="newsletter-form" action="process-newsletter.php">
-                        <div class="form-group" id="newsletter-name-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="newsletter-input-name" placeholder="Name">
-                                <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                            </div>
-                        </div>
-                        <div class="form-group" id="newsletter-email-group">
-                            <div class="input-group">
-                                <input type="email" class="form-control" id="newsletter-input-email" placeholder="Email">
-                                <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-                <!-- ==== NEWSLETTER END == -->
-
-                <!-- ==== LATEST POSTS START == -->
-                <div class="widget" data-scroll-reveal>
-                    <h3>Latest posts</h3>
-                    <div class="post row">
-                        <div class="col-md-4">
-                            <a href="#"><img src="images/sidebar-post1.jpg" alt="" class="img-responsive" /></a>
-                        </div>
-                        <div class="col-md-8">
-                            <h5><a href="#">Morbi nec quam sed elit pharetra</a></h5>
-                            <div class="meta">Posted Aug 18, 2015 by John Doe in Category Name</div>
-                        </div>
-                    </div>
-                    <div class="post row">
-                        <div class="col-md-4">
-                            <a href="#"><img src="images/sidebar-post2.jpg" alt="" class="img-responsive" /></a>
-                        </div>
-                        <div class="col-md-8">
-                            <h5><a href="#">Morbi nec quam sed elit pharetra</a></h5>
-                            <div class="meta">Posted Aug 18, 2015 by John Doe in Category Name</div>
-                        </div>
-                    </div>
-                    <div class="post row">
-                        <div class="col-md-4">
-                            <a href="#"><img src="images/sidebar-post3.jpg" alt="" class="img-responsive" /></a>
-                        </div>
-                        <div class="col-md-8">
-                            <h5><a href="#">Morbi nec quam sed elit pharetra</a></h5>
-                            <div class="meta">Posted Aug 18, 2015 by John Doe in Category Name</div>
-                        </div>
+    <!-- ==== BLOG START == -->
+    <div class="col-sm-8">
+        {% for blog in list_blog %}
+            <div class="post row" data-scroll-reveal>
+                <div class="col-md-5">
+                    <a href="{% url 'blog:detail' blog.pk blog.slug %}"><img src="{{ blog.get_image_url }}" alt="" class="img-responsive" /></a>
+                    <div class="post-date">
+                        <div class="post-day">{{ blog.create_date|date:'d' }}</div>
+                        <div class="post-month">Sep</div>
                     </div>
                 </div>
-                <!-- ==== LATEST POSTS END == -->
+                <div class="col-md-7">
+                    <h3><a href="{% url 'blog:detail' blog.pk blog.slug %}">{{ blog.title }}</a></h3>
+                    <div class="meta">
+                        <span><i class="fa fa-user"></i><a href="#">{{ blog.teacher.profile.user.username }}</a></span>
+                        <span><i class="fa fa-comments"></i><a href="#">24</a></span>
+                    </div>
+                    <p class="intro">{{ blog.description }}.<br>
+                    <a href="#">Read More <i class="fa fa-angle-right"></i></a></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr>
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- ==== PAGINATION START == -->
+        <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s, opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="row" data-scroll-reveal="">
+            <div class="col-sm-6">
+                {% if page_obj.has_previous %}                        
+                    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary lesson-prev"><i class="fa fa-caret-left"></i> &nbsp; Previous</a>
+                {% endif %}
             </div>
 
-            <!-- ==== SIDEBAR END == -->
-
-            <!-- ==== BLOG START == -->
-
-            <div class="col-sm-8">
-                {% for blog in list_blog %}
-                    <div class="post row" data-scroll-reveal>
-                        <div class="col-md-5">
-                            <a href="{% url 'blog:detail' blog.pk blog.slug %}"><img src="{{ blog.get_image_url }}" alt="" class="img-responsive" /></a>
-                            <div class="post-date">
-                                <div class="post-day">{{ blog.create_date|date:'d' }}</div>
-                                <div class="post-month">Sep</div>
-                            </div>
-                        </div>
-                        <div class="col-md-7">
-                            <h3><a href="{% url 'blog:detail' blog.pk blog.slug %}">{{ blog.title }}</a></h3>
-                            <div class="meta">
-                                <span><i class="fa fa-user"></i><a href="#">{{ blog.teacher.profile.user.username }}</a></span>
-                                <span><i class="fa fa-comments"></i><a href="#">24</a></span>
-                            </div>
-                            <p class="intro">{{ blog.description }}.<br>
-                            <a href="#">Read More <i class="fa fa-angle-right"></i></a></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <hr>
-                        </div>
-                    </div>
-                {% endfor %}
-
-                <!-- ==== PAGINATION START == -->
-                <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(0);transform: translatey(0);opacity: 1;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s, opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="row" data-scroll-reveal="">
-                    <div class="col-sm-6">
-                        {% if page_obj.has_previous %}                        
-                            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary lesson-prev"><i class="fa fa-caret-left"></i> &nbsp; Previous</a>
-                        {% endif %}
-                    </div>
-
-                    <div class="col-sm-6 text-right">
-                        {% if page_obj.has_next %}                        
-                            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary lesson-next">Next &nbsp; <i class="fa fa-caret-right"></i></a>                        
-                        {% endif %}
-                    </div>
-                </div>
-                <!-- ==== PAGINATION END == -->
-
+            <div class="col-sm-6 text-right">
+                {% if page_obj.has_next %}                        
+                    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary lesson-next">Next &nbsp; <i class="fa fa-caret-right"></i></a>                        
+                {% endif %}
             </div>
-
-            <!-- ==== BLOG END == -->
-
         </div>
+        <!-- ==== PAGINATION END == -->
     </div>
+    <!-- ==== BLOG END == -->
 {% endblock %}
