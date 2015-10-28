@@ -1,9 +1,9 @@
-from django.shortcuts import render
-
 from django.views.generic import TemplateView
 
-# Create your views here.
-class ContactView(TemplateView):
+from ars.core.views import BaseView
+
+
+class ContactView(BaseView, TemplateView):
     """docstring for ContactView"""
     template_name = 'contact/index.html'
 

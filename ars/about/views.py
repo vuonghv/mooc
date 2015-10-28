@@ -1,9 +1,9 @@
-from django.shortcuts import render
-
 from django.views.generic import TemplateView
 
-# Create your views here.
-class AboutUsView(TemplateView):
+from ars.core.views import BaseView
+
+
+class AboutUsView(BaseView, TemplateView):
     """docstring for AboutUsView"""
     template_name = 'about/index.html'
 

@@ -1,6 +1,9 @@
 {% extends 'layout/base.html' %}
 {% load staticfiles %}
 
+{% block related_subjects %}
+{% endblock related_subjects %}
+
 {% block content %}
     <!-- ==== BLOG START == -->
     <div class="col-sm-8">
@@ -15,8 +18,8 @@
                 </div>
                 <h1>Morbi nec quam sed elit pharetra</h1>
                 <div class="meta">
-                    <span><i class="fa fa-user"></i><a href="#">{{ object.teacher.profile.user.username }}</a></span>
-                    <span><i class="fa fa-comments"></i><a href="#">24</a></span>
+                    <span><i class="fa fa-user"></i><a href="{% url 'teachers:detail' object.teacher.pk %}">{{ object.teacher.username }}</a></span>
+                    <span><i class="fa fa-comments"></i><a href="#">{{ object.comments.count }}</a></span>
                 </div>
                 <p class="intro">
                     {{ object.content|safe }}
