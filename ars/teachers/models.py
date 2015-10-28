@@ -13,3 +13,13 @@ class Teacher(models.Model):
 
     def __str__(self):
         return 'Teacher {}'.format(self.name)
+
+    @property
+    def username(self):
+        return self.profile.user.username
+
+    @property
+    def avatar(self):
+        if self.profile.avatar:
+            return self.profile.avatar.url
+        return None

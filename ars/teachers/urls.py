@@ -4,5 +4,5 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^test/$', views.TestView.as_view(), name='test'),
+    url(r'^(?P<pk>[0-9]+)/$', views.DetailTeacherView.as_view(), name='detail'),
 ]
