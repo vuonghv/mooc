@@ -18,6 +18,7 @@ from ars.courses.models import Course, TeacherCourse
 from ars.subjects.models import Subject, Session, Task, Enroll
 from ars.reviews.models import Review
 from ars.blog.models import Blog
+from ars.teachers.models import Teacher
 
 from . import forms
 
@@ -350,6 +351,7 @@ class TaskCreateView(TeacherRequiredMixin, CreateView):
 
     def form_invalid(self, form):
         self.session = form.cleaned_data['session']
+        print(form.errors)
         messages.add_message(self.request, messages.INFO, "All fields is required")
         return HttpResponseRedirect(self.get_success_url())
 
@@ -441,3 +443,33 @@ class BlogDeleteView(TeacherRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('admin:list_blog')
+
+
+# Teacher Management
+
+class TeacherView(AdminRequiredMixin, ListView):
+    """docstring for TeacherView"""
+    context_object_name = 'list_teacher'
+    template_name = 'admin/teacher_index.html'
+
+    def get_queryset(self):
+        return Teacher.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(TeacherView, self).get_context_data(**kwargs)
+        info = {
+            'title': 'Teacher - TMS',
+            'sidebar': ['teacher']
+        }
+        context['info'] = info
+        return context
+
+class TeacherDeleteView(AdminRequiredMixin, DeleteView):
+    """docstring for TeacherDeleteView"""
+    model = Teacher
+
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('admin:list_teacher')
