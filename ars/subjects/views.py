@@ -34,7 +34,8 @@ class DetailSubjectMixin(object):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        if hasattr(self.request.user.profile, 'student'):
+        if hasattr(self.request.user, 'profile') and \
+           hasattr(self.request.user.profile, 'student'):
             student = self.request.user.profile.student
             has_reviewed = Review.objects.filter(
                     student=student, subject=self.object).exists()
@@ -73,8 +74,12 @@ class ReviewSubjectView(DetailSubjectMixin, BaseView, SingleObjectMixin, FormVie
         return reverse_lazy('subjects:detail', kwargs={'pk': self.object.pk})
     
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated() or request.user.profile.is_teacher:
-            return HttpResponseForbidden()
+
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('students:login'))
+
+        if request.user.profile.is_teacher:
+            return HttpResponseForbidden('You are a teacher, you cannot review')
 
         self.object = self.get_object()
         return super().post(request, *args, **kwargs)
