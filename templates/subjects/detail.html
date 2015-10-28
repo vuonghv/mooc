@@ -49,7 +49,7 @@
                 <span>
                     <ul class="list-inline">
                     {% for category in subject.categories.all %}
-                        <li><a href="#">{{ category }}</a></li>
+                        <li><a href="{% url 'category:index' category.pk %}">{{ category }}</a></li>
                     {% endfor %}
                     </ul>
                 </span>
@@ -112,11 +112,11 @@ lectus pulvinar.<br>
     <hr>
     {% if has_enrolled %}
         <h3>Tasks</h3>
-        {% for task in subject.latest_session.task.all %}
+        {% for task in subject.latest_session.tasks.all %}
             {% if task.is_published %}
-            <h5 class="lesson-title"><a href="#">{{ taks.name }}</a></h5>
+            <h5 class="lesson-title"><a href="#">{{ task.name }}</a></h5>
             <div class="meta">
-                <span><i class="fa fa-clock-o"></i>From: {{ taks.start_date|date:'D d M Y' }}</span>
+                <span><i class="fa fa-clock-o"></i>From: {{ task.start_date|date:'D d M Y' }}</span>
                 <span><i class="fa fa-clock-o"></i>To: {{ task.end_date|date:'D d M Y' }}</span>
             </div>
             <p>{{ task.content }}</p>
