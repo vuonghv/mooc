@@ -38,8 +38,7 @@ class BlogDetailView(BaseView, DetailView):
                 'title': self.object.title,
                 },
             'page_title': 'Blog',
-            'comments': Comment.objects.filter(profile=self.request.user.profile,
-                                                blog=self.object).order_by('-id')
+            'comments': Comment.objects.filter(blog=self.object).order_by('-id')
         }
         context.update(info)
         return context
