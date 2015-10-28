@@ -7,6 +7,7 @@ from django.http import HttpResponseForbidden
 from ars.categories.models import Category
 from ars.blog.models import Blog
 from ars.subjects.models import Subject
+from ars.comments.models import Comment
 
 class LoginRequiredMixin(object):
     """docstring for LoginRequiredMixin"""
@@ -36,6 +37,7 @@ class BaseView(ContextMixin):
             'list_lastest_subject': Subject.objects.all()[:3],
             'list_popular_subject': Subject.objects.order_by('?')[:3],
             'list_category': Category.objects.all(),
+            'list_latest_comment': Comment.objects.order_by('-id')[:3]
         }
         context.update(info)
         return context

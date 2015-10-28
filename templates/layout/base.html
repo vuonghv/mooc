@@ -219,16 +219,16 @@
                 <!-- ==== LATEST COMMENTS START == -->
                 <div class="col-sm-3">
                     <h3>Latest Comments</h3>
+                    {% if list_latest_comment %}
                     <ul>
+                        {% for comment in list_latest_comment %}
                         <li>
-                            <p><a href="blog-article-right-sidebar.html">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut rutrum eros, a rutrum urna.</a></p>
-                            <p class="author"><a href="blog-article-right-sidebar.html">by John Doe</a></p>
+                            <p><a href="blog-article-right-sidebar.html">{{ comment.content|truncatewords:19 }}</a></p>
+                            <p class="author"><a href="#">by {{ comment.profile.user.username }}</a>, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>{{ comment.create_date|date:'D d M Y' }}</em></p>
                         </li>
-                        <li>
-                            <p><a href="blog-article-right-sidebar.html">Donec lorem mi, eleifend sit amet varius vitae, ullamcorper et urna. Aliquam tincidunt tempus purus vitae laoreet.</a></p>
-                            <p class="author"><a href="blog-article-right-sidebar.html">by John Doe</a></p>
-                        </li>
+                        {% endfor %}
                     </ul>
+                    {% endif %}
                 </div>
                 <!-- ==== LATEST COMMENTS END == -->
             </div>

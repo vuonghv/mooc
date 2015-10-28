@@ -8,7 +8,7 @@ from ars.core.models import UserProfile
 class Comment(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     profile = models.ForeignKey(UserProfile)
-    blog = models.ForeignKey(Blog)
+    blog = models.ForeignKey(Blog, related_name='comments')
     content = models.TextField()
 
     class Meta:
@@ -18,4 +18,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
-
