@@ -110,6 +110,21 @@ lectus pulvinar.<br>
     <h1>{{ subject.name }}</h1>
     <p>{{ subject.description }}</p>
     <hr>
+    {% if has_enrolled %}
+        <h3>Tasks</h3>
+        {% for task in subject.latest_session.task.all %}
+            {% if task.is_published %}
+            <h5 class="lesson-title"><a href="#">{{ taks.name }}</a></h5>
+            <div class="meta">
+                <span><i class="fa fa-clock-o"></i>From: {{ taks.start_date|date:'D d M Y' }}</span>
+                <span><i class="fa fa-clock-o"></i>To: {{ task.end_date|date:'D d M Y' }}</span>
+            </div>
+            <p>{{ task.content }}</p>
+            <hr>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% comment %}
     <h3>Lessons</h3>
     <h5 class="lesson-title"><a href="#">Donec porta nulla volutpat interdum porta</a></h5>
     <div class="meta">
@@ -154,7 +169,6 @@ Praesent sit amet pharetra nunc, non scelerisque ligula. Cras vel justo
 nulla. Vestibulum a sollicitudin metus, faucibus fermentum leo. Nulla ut
 purus vel nunc ultricies dignissim at at nunc. Vivamus tempor eget 
 lorem non commodo.</p>
-    {% comment %}
     <hr>
     <div data-scroll-reveal-initialized="true" style="-webkit-transform: translatey(24px);transform: translatey(24px);opacity: 0;-webkit-transition: -webkit-transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;transition: transform 0.66s ease-in-out 0s,  opacity 0.66s ease-in-out 0s;-webkit-perspective: 1000;-webkit-backface-visibility: hidden;" class="row" data-scroll-reveal="">
         <div class="col-sm-6">
@@ -167,10 +181,10 @@ lorem non commodo.</p>
     {% endcomment %}
 
     <!-- ==== COMMENTS START ==== -->
+    {% if subject.reviews.exists %}
     <div class="row">
         <div class="col-sm-12">
             <h3>Reviews</h3>
-            {% if subject.reviews %}
             <ul class="media-list">
 
                 {% for review in subject.reviews.all %}
@@ -250,9 +264,9 @@ lorem non commodo.</p>
                 </li>
                 {% endcomment %}
             </ul>
-            {% endif %} {# if subject.reviews #}
         </div>
     </div>
+    {% endif %} {# if subject.reviews #}
     <!-- ==== COMMENTS END ==== -->
 
     <!-- ==== COMMENT FORM START ==== -->

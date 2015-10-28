@@ -4,9 +4,8 @@ from django.views.generic.detail import SingleObjectMixin
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 
 from ars.subjects.models import Subject
-from ars.core.views import LoginRequiredMixin
+from ars.core.views import LoginRequiredMixin, BaseView, StudentRequiredMixin
 from ars.subjects.models import Enroll
-from ars.core.views import BaseView
 from ars.reviews.forms import ReviewSubjectForm
 from ars.reviews.models import Review
 
@@ -102,7 +101,7 @@ class DetailSubjectView(View):
         return view(request, *args, **kwargs)
 
 
-class EnrollSubjectView(LoginRequiredMixin, CreateView):
+class EnrollSubjectView(StudentRequiredMixin, CreateView):
     model = Enroll
     fields = ['session']
 

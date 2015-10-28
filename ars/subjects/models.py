@@ -49,7 +49,7 @@ class Session(models.Model):
         return '{} - {}'.format(self.start_date, self.end_date)
     
 class Task(Describable):
-    session = models.ForeignKey(Session)
+    session = models.ForeignKey(Session, related_name='tasks')
     slug = models.SlugField()
     content = models.TextField()
     start_date = models.DateTimeField()
@@ -62,6 +62,10 @@ class Task(Describable):
 
     def __str__(self):
         return 'Task {}'.format(self.name)
+    
+    @property
+    def is_published(self):
+        return True
 
 class Enroll(Timestampable):
     session = models.ForeignKey(Session, related_name='enrolls')

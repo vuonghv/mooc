@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic.detail import ContextMixin
 from django.views.decorators.gzip import gzip_page
+from django.http import HttpResponseForbidden
 
 from ars.categories.models import Category
 from ars.blog.models import Blog
@@ -12,6 +13,15 @@ class LoginRequiredMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+
+class StudentRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not hasattr(request.user.profile, 'student'):
+            return HttpResponseForbidden('You must be a student')
+        return super().dispatch(request, *args, **kwargs)
+
 
 class BaseView(ContextMixin):
     """docstring for BaseView"""
