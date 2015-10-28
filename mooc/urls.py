@@ -35,4 +35,5 @@ urlpatterns = [
     url(r'^about-us/', include('ars.about.urls', namespace='about')),
     url(r'^contact/', include('ars.contact.urls', namespace='contact')),
     url(r'^blog/', include('ars.blog.urls', namespace='blog')),
+    url(r'^category/', include('ars.categories.urls', namespace='category')),
 ]

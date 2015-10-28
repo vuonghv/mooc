@@ -22,7 +22,6 @@ class Course(Timestampable, Describable):
                                     ).filter(teachercourse__is_creator=True
                                     ).get()
         except MultipleObjectsReturned as err:
-            print(err.strerror)
             teacher = self.teachers[0]
         
         return teacher

@@ -1,0 +1,22 @@
+{% extends 'layout/base.html' %}
+
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block content %}
+    <ul class="exams-grid">
+        {% for subject in list_subject %}
+            <li class="col-lg-3 col-md-4 col-sm-6">
+                <img src="{{ subject.get_image_url }}" alt="" class="img-responsive">
+                <div class="description">
+                    <h3>{{ subject.name }}</h3>
+                    <ul>
+                        <li><i class="fa fa-calendar"></i>{{ subject.latest_session.start_date|date:'d/m/Y' }}</li>
+                    </ul>
+                    <p>{{ subject.description }}.</p>
+                </div>
+                <a href="{% url 'subjects:detail' subject.pk %}"><span>Detail subject</span></a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

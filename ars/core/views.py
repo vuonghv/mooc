@@ -5,6 +5,7 @@ from django.views.decorators.gzip import gzip_page
 
 from ars.categories.models import Category
 from ars.blog.models import Blog
+from ars.subjects.models import Subject
 
 class LoginRequiredMixin(object):
     """docstring for LoginRequiredMixin"""
@@ -22,7 +23,9 @@ class BaseView(ContextMixin):
         context = super(BaseView, self).get_context_data(**kwargs)
         info = {
             'list_lastest_post': Blog.objects.order_by('-id')[:5],
-            'list_category': Category.objects.all()
+            'list_lastest_subject': Subject.objects.all()[:3],
+            'list_popular_subject': Subject.objects.order_by('?')[:3],
+            'list_category': Category.objects.all(),
         }
         context.update(info)
         return context
