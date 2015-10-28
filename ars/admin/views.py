@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import permission_required, login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth.models import User
 
 from ars.categories.models import Category
 from ars.courses.models import Course, TeacherCourse
@@ -19,6 +20,7 @@ from ars.subjects.models import Subject, Session, Task, Enroll
 from ars.reviews.models import Review
 from ars.blog.models import Blog
 from ars.teachers.models import Teacher
+from ars.students.models import Student
 
 from . import forms
 
@@ -466,10 +468,40 @@ class TeacherView(AdminRequiredMixin, ListView):
 
 class TeacherDeleteView(AdminRequiredMixin, DeleteView):
     """docstring for TeacherDeleteView"""
-    model = Teacher
+    model = User
 
     def get(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse('admin:list_teacher')
+
+# Student Management
+
+class StudentView(AdminRequiredMixin, ListView):
+    """docstring for StudentView"""
+    context_object_name = 'list_student'
+    template_name = 'admin/student_index.html'
+
+    def get_queryset(self):
+        return Student.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentView, self).get_context_data(**kwargs)
+        info = {
+            'title': 'Student - TMS',
+            'sidebar': ['student']
+        }
+        context['info'] = info
+        return context
+
+class StudentDeleteView(AdminRequiredMixin, DeleteView):
+    """docstring for StudentDeleteView"""
+    model = User
+
+    def get(self, request, *args, **kwargs):
+        # raise Exception
+        return self.delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('admin:list_student')

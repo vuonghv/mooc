@@ -31,6 +31,11 @@
                     <a href="{% url 'admin:list_teacher' %}">
                     <i class="fa fa-list"></i> <span>Teacher</span>
                     </a>
+                </li>
+                <li class="{% if 'student' in info.sidebar %} active {% endif %}">
+                    <a href="{% url 'admin:list_student' %}">
+                    <i class="fa fa-list"></i> <span>Student</span>
+                    </a>
                 </li>                
             {% endif %}
 

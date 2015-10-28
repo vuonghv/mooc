@@ -69,4 +69,11 @@ urlpatterns = [
     url(r'^teacher/delete/(?P<pk>[0-9]+)/$', views.TeacherDeleteView.as_view(), 
                                                                     name='delete_teacher'),
 
+    #############################################################
+    #############################################################
+    #############################################################
+    # Url student
+    url(r'^student/$', views.StudentView.as_view(), name='list_student'),
+    url(r'^student/delete/(?P<pk>[0-9]+)/$', views.StudentDeleteView.as_view(), 
+                                                                    name='delete_student'),
 ]
