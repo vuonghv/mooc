@@ -68,86 +68,167 @@
             <div class="col-md-9">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#task" data-toggle="tab">Task</a></li>
+                        <li class="{{ task_form|yesno:'active,,' }}"><a href="#task" data-toggle="tab">Task</a></li>
                         <li><a href="#reviews" data-toggle="tab">Reviews</a></li>
-                        <li><a href="#sessions" data-toggle="tab">Sessions</a></li>
+                        <li class="{{ session_form|yesno:'active,,' }}"><a href="#sessions" data-toggle="tab">Sessions</a></li>
                         <li><a href="#endrolls" data-toggle="tab">Endroll</a></li>
                     </ul>
                     <div class="tab-content">                        
                         <div class="active tab-pane" id="task">
-                            <form class="form-horizontal" method="POST" action="{% url 'admin:create_task' %}">
-                                {% csrf_token %}
-                                <div class="form-group {% if messages %} has-error {% endif %}">
-                                    <div class="col-sm-2"></div>
-                                    <div class="col-sm-10">
-                                        {% for message in messages %}                                        
-                                            <span class="help-block">{{ message }}</span>
-                                        {% endfor %}
+                            {% if task_form %}
+                                <form class="form-horizontal" method="POST" action="{% url 'admin:detail_subject' object.pk %}">
+                                    {% csrf_token %}
+                                    {% if task_form.non_field_errors %} 
+                                        <div class="form-group">
+                                            <div class="col-sm-10 col-sm-offset-2 text-danger">
+                                                {{ task_form.non_field_errors }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="form-group {{ task_form.session.errors|yesno:'has-error,,' }}">
+                                        <label for="inputName" class="col-sm-2 control-label">Session</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control select2" name="{{ task_form.session.html_name }}" data-placeholder="Select session" style="width: 100%;">
+                                                {% for session in sessions  %}
+                                                    <option value="{{ session.id }}">{{ session.start_date|date:'d/m/Y' }} - {{ session.end_date|date:'d/m/Y' }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <span class="help-block">{{ task_form.session.errors }}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Session</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control select2" name="session" data-placeholder="Select session" style="width: 100%;">
-                                            {% for session in sessions  %}
-                                                <option value="{{ session.id }}">{{ session.start_date|date:'d/m/Y' }} - {{ session.end_date|date:'d/m/Y' }}</option>
+
+                                    <div class="form-group {{ task_form.name.errors|yesno:'has-error,,' }}">
+                                        <label for="inputName" class="col-sm-2 control-label">Name</label>
+                                        <div class="col-sm-10">
+                                            <input id="id_name" value="{{ task_form.name.value|default:'' }}" type="text" class="form-control" name="{{ task_form.name.html_name }}" />
+                                            <span class="help-block">{{ task_form.name.errors }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group {{ task_form.slug.errors|yesno:'has-error,,' }}">
+                                        <label for="inputName" class="col-sm-2 control-label">Slug</label>
+                                        <div class="col-sm-10">
+                                            <input id="id_slug" type="text" value="{{ task_form.slug.value|default:'' }}" class="form-control" name="{{ task_form.slug.html_name }}" />
+                                            <span class="help-block">{{ task_form.slug.errors }}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group {{ task_form.content.errors|yesno:'has-error,,' }}">
+                                        <label for="inputName" class="col-sm-2 control-label">Content</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" name="{{ task_form.content.html_name }}">{{ task_form.content.value|default:'' }}</textarea>
+                                            <span class="help-block">{{ task_form.content.errors }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group {{ task_form.start_date.errors|yesno:'has-error,,' }}">
+                                        <label for="inputName" class="col-sm-2 control-label">Start Date</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input name="{{ task_form.start_date.html_name }}" value="{{ task_form.start_date.value|default:'' }}" type="text" class="datemask form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                            </div>
+                                            <span class="help-block">{{ task_form.start_date.errors }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group {{ task_form.end_date.errors|yesno:'has-error,,' }}">
+                                        <label for="inputName" class="col-sm-2 control-label">End Date</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input name="{{ task_form.end_date.html_name }}" value="{{ task_form.end_date.value|default:'' }}" type="text" class="datemask form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                            </div>
+                                            <span class="help-block">{{ task_form.end_date.errors }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" name="submit_task" class="btn btn-danger">Save Task</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            {% else %}
+                                <form class="form-horizontal" method="POST" action="{% url 'admin:detail_subject' object.pk %}">
+                                    {% csrf_token %}
+                                    <div class="form-group {% if messages %} has-error {% endif %}">
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-10">
+                                            {% for message in messages %}                                        
+                                                <span class="help-block">{{ message }}</span>
                                             {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Name</label>
-                                    <div class="col-sm-10">
-                                        <input id="id_name" value="" type="text" class="form-control" name="name" />
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Slug</label>
-                                    <div class="col-sm-10">
-                                        <input id="id_slug" type="text" value="" class="form-control" name="slug" />
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Content</label>
-                                    <div class="col-sm-10">
-                                        <textarea class="form-control" value="" name="content"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Start Date</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input name="start_date" type="text" class="datemask form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">End Date</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input name="end_date" type="text" class="datemask form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">Session</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control select2" name="session" data-placeholder="Select session" style="width: 100%;">
+                                                {% for session in sessions  %}
+                                                    <option value="{{ session.id }}">{{ session.start_date|date:'d/m/Y' }} - {{ session.end_date|date:'d/m/Y' }}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-danger">Save Task</button>
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">Name</label>
+                                        <div class="col-sm-10">
+                                            <input id="id_name" value="" type="text" class="form-control" name="name" />
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">Slug</label>
+                                        <div class="col-sm-10">
+                                            <input id="id_slug" type="text" value="" class="form-control" name="slug" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">Content</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" value="" name="content"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">Start Date</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input name="start_date" type="text" class="datemask form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">End Date</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input name="end_date" type="text" class="datemask form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" name="submit_task" class="btn btn-danger">Save Task</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            {% endif %}
 
                             <hr/>
 
@@ -197,52 +278,99 @@
                         </div>
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="sessions">                                                        
-                            <form class="form-horizontal" method="POST" action="{% url 'admin:create_session' %}">
-                                {% csrf_token %}
-                                <div class="form-group {% if messages %} has-error {% endif %}">
-                                    <div class="col-sm-2"></div>
-                                    <div class="col-sm-10">
-                                        {% for message in messages %}
-                                            {% if message.id == "session" %}
-                                                <span class="help-block">{{ message.msg }}</span>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                </div>
+                            {% if session_form %}
+                                <form class="form-horizontal" method="POST" action="{% url 'admin:detail_subject' object.pk %}">
+                                    {% csrf_token %}
 
-                                <input type="hidden" value="{{ subject.pk }}" name="subject">
-                                <div class="form-group {% if form_session.start_date.errors %} has-error {% endif %}">
-                                    <label for="inputName" class="col-sm-2 control-label">Start Date</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
+                                    {% if session_form.non_field_errors %} 
+                                        <div class="form-group">
+                                            <div class="col-sm-10 col-sm-offset-2 text-danger">
+                                                {{ session_form.non_field_errors }}
                                             </div>
-                                            <input name="start_date" type="text" class="datemask form-control" value="{{ form_session.start_date.value|default_if_none:"" }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
                                         </div>
-                                        <span class="help-block">{{ form_session.start_date.errors }}</span>
-                                    </div>
-                                </div>
+                                    {% endif %}
 
-                                <div class="form-group {% if form_session.end_date.errors %} has-error {% endif %}">
-                                    <label for="inputName" class="col-sm-2 control-label">End Date</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
+                                    <input type="hidden" value="{{ subject.pk }}" name="subject">
+                                    <div class="form-group {% if session_form.start_date.errors %} has-error {% endif %}">
+                                        <label for="inputName" class="col-sm-2 control-label">Start Date</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input name="{{ session_form.start_date.html_name }}" type="text" class="datemask form-control" value="{{ session_form.start_date.value|default_if_none:"" }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
                                             </div>
-                                            <input name="end_date" type="text" class="datemask form-control" value="{{ form_session.end_date.value|default_if_none:"" }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                            <span class="help-block">{{ session_form.start_date.errors }}</span>
                                         </div>
-                                        <span class="help-block">{{ form_session.end_date.errors }}</span>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-danger">Save Session</button>
+                                    <div class="form-group {% if session_form.end_date.errors %} has-error {% endif %}">
+                                        <label for="inputName" class="col-sm-2 control-label">End Date</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input name="{{ session_form.end_date.html_name }}" type="text" class="datemask form-control" value="{{ session_form.end_date.value|default_if_none:"" }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                            </div>
+                                            <span class="help-block">{{ session_form.end_date.errors }}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" name="submit_session" class="btn btn-danger">Save Session</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            {% else %}
+                                <form class="form-horizontal" method="POST" action="{% url 'admin:detail_subject' object.pk %}">
+                                    {% csrf_token %}
+                                    <div class="form-group {% if messages %} has-error {% endif %}">
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-10">
+                                            {% for message in messages %}
+                                                {% if message.id == "session" %}
+                                                    <span class="help-block">{{ message.msg }}</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" value="{{ subject.pk }}" name="subject">
+                                    <div class="form-group {% if form_session.start_date.errors %} has-error {% endif %}">
+                                        <label for="inputName" class="col-sm-2 control-label">Start Date</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input name="start_date" type="text" class="datemask form-control" value="{{ form_session.start_date.value|default_if_none:"" }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                            </div>
+                                            <span class="help-block">{{ form_session.start_date.errors }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group {% if form_session.end_date.errors %} has-error {% endif %}">
+                                        <label for="inputName" class="col-sm-2 control-label">End Date</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input name="end_date" type="text" class="datemask form-control" value="{{ form_session.end_date.value|default_if_none:"" }}" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                            </div>
+                                            <span class="help-block">{{ form_session.end_date.errors }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" name="submit_session" class="btn btn-danger">Save Session</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            {% endif %}
                         </div>
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="endrolls">                            

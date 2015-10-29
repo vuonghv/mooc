@@ -6,7 +6,7 @@ from django.views.generic import (
         FormView, View, CreateView, DetailView,
         UpdateView, DeleteView, TemplateView, ListView,
     )
-
+from django.views.generic.detail import SingleObjectMixin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import permission_required, login_required
 from django.utils.decorators import method_decorator
@@ -272,28 +272,100 @@ class SubjectUpdateView(TeacherRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('admin:list_subject')
 
-class SubjectDetailView(TeacherRequiredMixin, DetailView):
-    """docstring for SubjectDetailView"""
+class CommonContextSubject(object):
     model = Subject 
     template_name = 'admin/subject_detail.html'
 
     def get_context_data(self, **kwargs):
-        context = super(SubjectDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        teacher = self.request.user.profile.teacher
+
         info = {
             'title': 'Detail Subject - TMS',
             'sidebar': ['subject']
         }
         context['info'] = info
+
         context['reviews'] = Review.objects.filter(
                                     subject=self.object, 
-                                    subject__course__teachers=self.request.user.profile.teacher
+                                    subject__course__teachers=teacher
                                     ).order_by('-id')
+
         context['sessions'] = Session.objects.filter(subject=self.object)
+
         context['tasks'] = Task.objects.filter(session__subject=self.object,
-                                session__subject__course__teachers=self.request.user.profile.teacher).order_by('-id')
+                                session__subject__course__teachers=teacher
+                                ).order_by('-id')
+
         context['endrolls'] = Enroll.objects.filter(session__subject=self.object,
-                                session__subject__course__teachers=self.request.user.profile.teacher).order_by('-id')
+                                session__subject__course__teachers=teacher
+                                ).order_by('-id')
         return context
+
+
+class CreateTaskSubmit(TeacherRequiredMixin, CommonContextSubject,
+                        SingleObjectMixin, FormView):
+    form_class = forms.TaskForm
+
+    def get_success_url(self):
+        return reverse_lazy('admin:detail_subject' ,
+                            kwargs={ 'pk': self.object.pk })
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        self.task = form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        print(form)
+        return self.render_to_response(
+                    self.get_context_data(task_form=form))
+
+
+class CreateSessionSubmit(TeacherRequiredMixin, CommonContextSubject,
+                            SingleObjectMixin, FormView):
+    form_class = forms.SessionForm
+
+    def get_success_url(self):
+        return reverse_lazy('admin:detail_subject' ,
+                            kwargs={ 'pk': self.object.pk })
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        self.session = form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        return self.render_to_response(
+                    self.get_context_data(session_form=form))
+
+
+class SubjectDetailView(TeacherRequiredMixin, CommonContextSubject, DetailView):
+    task_form = forms.TaskForm
+    session_form = forms.SessionForm
+
+    def get(self, request, *args, **kwargs):
+        kwargs.setdefault('task_form', self.task_form())
+        kwargs.setdefault('session_form', self.session_form())
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if 'submit_task' in request.POST:
+            view = CreateTaskSubmit.as_view()
+        elif 'submit_session' in request.POST:
+            view = CreateSessionSubmit.as_view()
+
+        if view:
+            return view(request, *args, **kwargs)
+
+        return super().post(request, *args, **kwargs)
+
 
 class SubjectDeleteView(TeacherRequiredMixin, DeleteView):
     """docstring for SubjectDeleteView"""
