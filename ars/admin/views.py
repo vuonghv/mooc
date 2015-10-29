@@ -321,7 +321,6 @@ class CreateTaskSubmit(TeacherRequiredMixin, CommonContextSubject,
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
-        print(form)
         return self.render_to_response(
                     self.get_context_data(task_form=form))
 
@@ -362,10 +361,11 @@ class SubjectDetailView(TeacherRequiredMixin, CommonContextSubject, DetailView):
         elif 'submit_session' in request.POST:
             view = CreateSessionSubmit.as_view()
 
-        if view:
+        try:
             return view(request, *args, **kwargs)
-
-        return super().post(request, *args, **kwargs)
+        except NameError as err:
+            print(err.strerror)
+            return super().post(request, *args, **kwargs)
 
 
 class SubjectDeleteView(TeacherRequiredMixin, DeleteView):
