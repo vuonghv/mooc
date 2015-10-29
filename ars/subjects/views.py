@@ -14,6 +14,9 @@ class ListSubjectView(BaseView, ListView):
     template_name = 'subjects/index.html'
     paginate_by = 6
 
+    def get_queryset(self):
+        return Subject.objects.order_by('-id')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         info = {
