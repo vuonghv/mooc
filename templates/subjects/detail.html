@@ -108,9 +108,9 @@ lectus pulvinar.<br>
 <!-- ==== COURSES START == -->
 <div class="col-sm-8">
     <h1>{{ subject.name }}</h1>
-    <p>{{ subject.description }}</p>
-    <hr>
+    <p>{{ subject.description }}</p>    
     {% if has_enrolled %}
+    <hr>
         <h3>Tasks</h3>
         {% for task in subject.latest_session.tasks.all %}
             {% if task.is_published %}

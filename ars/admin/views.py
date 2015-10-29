@@ -21,6 +21,7 @@ from ars.reviews.models import Review
 from ars.blog.models import Blog
 from ars.teachers.models import Teacher
 from ars.students.models import Student
+from ars.core.models import UserProfile
 
 from . import forms
 
@@ -465,6 +466,32 @@ class TeacherView(AdminRequiredMixin, ListView):
         }
         context['info'] = info
         return context
+
+class TeacherCreateView(AdminRequiredMixin, CreateView):
+    """docstring for TeacherCreateView"""
+    template_name = "admin/teacher_create.html"
+    model = User
+    form_class = forms.TeacherForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TeacherCreateView, self).get_context_data(**kwargs)
+        info = {
+            'title': 'Create Teacher - TMS',
+            'sidebar': ['teacher']
+        }
+        context['info'] = info
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save()
+        profile = UserProfile.objects.create(user=self.object)
+        profile.save()
+        teacher = Teacher.objects.create(profile=profile)
+        teacher.save()
+        return super(TeacherCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('admin:list_teacher')
 
 class TeacherDeleteView(AdminRequiredMixin, DeleteView):
     """docstring for TeacherDeleteView"""

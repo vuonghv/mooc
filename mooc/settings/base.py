@@ -132,3 +132,4 @@ LOGIN_URL = reverse_lazy('students:login')
 ###########################################
 BLOG_DIR = 'blog'
 SUBJECT_DIR = 'subjects'
+TEACHER_DIR = 'teachers'
