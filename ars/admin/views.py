@@ -554,9 +554,14 @@ class TeacherCreateView(AdminRequiredMixin, CreateView):
         context['info'] = info
         return context
 
-    def form_valid(self, form):
-        self.object = form.save()
-        profile = UserProfile.objects.create(user=self.object)
+    def form_valid(self, form):        
+        password = form.cleaned_data['password']
+        user = form.save(commit=False)
+        user.is_staff = True
+        user.set_password(password)
+        user.save()
+
+        profile = UserProfile.objects.create(user=user)
         profile.save()
         teacher = Teacher.objects.create(profile=profile)
         teacher.save()
