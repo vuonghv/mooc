@@ -13,6 +13,7 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django import forms as djforms
 
 from ars.categories.models import Category
 from ars.courses.models import Course, TeacherCourse
@@ -243,6 +244,13 @@ class SubjectCreateView(TeacherRequiredMixin, CreateView):
     template_name = 'admin/subject_create.html'
     form_class = forms.SubjectForm
 
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form = self.get_form()
+        form.fields['courses'] = djforms.ModelChoiceField(
+                    queryset=Course.objects.filter(teachers__profile__user=self.request.user))
+        return self.render_to_response(self.get_context_data(form=form))
+
     def get_context_data(self, **kwargs):
         context = super(SubjectCreateView, self).get_context_data(**kwargs)
         info = {
@@ -261,6 +269,13 @@ class SubjectUpdateView(TeacherRequiredMixin, UpdateView):
     template_name = 'admin/subject_update.html'
     form_class = forms.SubjectForm
 
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form = self.get_form()
+        form.fields['courses'] = djforms.ModelChoiceField(
+                    queryset=Course.objects.filter(teachers__profile__user=self.request.user))
+        return self.render_to_response(self.get_context_data(form=form))
+        
     def get_context_data(self, **kwargs):
         context = super(SubjectUpdateView, self).get_context_data(**kwargs)
         info = {
